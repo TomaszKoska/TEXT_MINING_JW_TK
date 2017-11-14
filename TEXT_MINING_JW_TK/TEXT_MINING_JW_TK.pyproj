@@ -21,16 +21,28 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="crawlers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="databaseHelpers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="garbage\class1.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="garbage\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="research\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TEXT_MINING_JW_TK.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="crawlers\" />
+    <Folder Include="databaseHelpers\" />
     <Folder Include="garbage\" />
+    <Folder Include="research\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
