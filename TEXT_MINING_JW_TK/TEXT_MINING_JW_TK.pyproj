@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>TEXT_MINING_JW_TK.py</StartupFile>
+    <StartupFile>garbage\CrawlerTest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,13 +21,28 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="crawlers\BankierExtraction.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="crawlers\Crawler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="crawlers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="databaseHelpers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="garbage\class1.py">
+    <Compile Include="dataModel\ArticleClass.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="dataModel\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="garbage\CrawlerTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="garbage\JacekŚmieć.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="garbage\__init__.py">
@@ -41,6 +56,7 @@
   <ItemGroup>
     <Folder Include="crawlers\" />
     <Folder Include="databaseHelpers\" />
+    <Folder Include="dataModel\" />
     <Folder Include="garbage\" />
     <Folder Include="research\" />
   </ItemGroup>
