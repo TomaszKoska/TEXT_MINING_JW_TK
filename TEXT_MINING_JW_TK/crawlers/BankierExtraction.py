@@ -5,7 +5,7 @@ dla podanego url sciaga tresc artykulu i zapisuje do obiektu Article
 def BankierText(url):
     import urllib.request as uLib
     from bs4 import BeautifulSoup
-    from dataModel.ArticleClass import ArticleClass
+    from dataModel.Document import Document
     
     page = uLib.urlopen(url)
     soup = BeautifulSoup(page, 'lxml')
@@ -14,7 +14,7 @@ def BankierText(url):
     outcome = article_txt.text.strip()
     
     title_txt = soup.title.text.strip()
-    article = ArticleClass()
+    article = Document()
     article.Title = title_txt
     article.Text = outcome  
     return article
