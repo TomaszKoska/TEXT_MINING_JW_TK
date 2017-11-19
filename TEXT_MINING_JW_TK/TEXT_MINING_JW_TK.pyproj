@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>garbage\CrawlerFunctionTest.py</StartupFile>
+    <StartupFile>garbage\wordNetPlTest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -49,6 +49,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="garbage\JacekŚmieć.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="garbage\wordNetPlTest.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="garbage\__init__.py">
