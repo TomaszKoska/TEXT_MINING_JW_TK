@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from dataModel.Document import Document
 from crawlers.BankierExtraction import BankierText
 from databaseHelpers.CsvHelper import CsvHelper
+from databaseHelpers.SqliteHelper import SqliteHelper
 
 #parametry które będa wejsciowe do funkcji
 firstPage = 1
@@ -29,11 +30,8 @@ for i in range(firstPage, lastPage+1):
 
 
     myHelper = CsvHelper(databesePath="D:/databases/csv/",delimiter=",")
-    #myHelper = CsvHelper(databesePath="D:/databases/bazka1.db")
+    #myHelper = SqliteHelper(databesePath="D:/databases/bazka1.db")
 
-    myHelper.start()
-    myHelper.createDocumentTable("pozdro") # w przypadku obu helperów
-    myHelper.close()  
 
     myHelper.start()
     for article in articles:
