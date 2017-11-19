@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>garbage\wordNetPlTest.py</StartupFile>
+    <StartupFile>research\BankierMining\GetData.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,18 +21,27 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AutomatedTesting\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="crawlers\BankierExtraction.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="crawlers\Crawler.py">
+    <Compile Include="crawlers\CrawlerBankier.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="crawlers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="databaseHelpers\AbstractDatabaseHelper.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="databaseHelpers\CsvHelper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="databaseHelpers\demonstration.py" />
     <Compile Include="databaseHelpers\SqliteHelper.py" />
-    <Compile Include="databaseHelpers\test_SqliteHelper.py" />
+    <Compile Include="AutomatedTesting\test_SqliteHelper.py" />
     <Compile Include="databaseHelpers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -57,17 +66,31 @@
     <Compile Include="garbage\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="research\BankierMining\DoSomethingToData.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="research\BankierMining\GetData.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="research\BankierMining\PrepareDatabase.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="research\BankierMining\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="research\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TEXT_MINING_JW_TK.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AutomatedTesting\" />
     <Folder Include="crawlers\" />
     <Folder Include="databaseHelpers\" />
     <Folder Include="dataModel\" />
     <Folder Include="garbage\" />
     <Folder Include="research\" />
+    <Folder Include="research\BankierMining\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

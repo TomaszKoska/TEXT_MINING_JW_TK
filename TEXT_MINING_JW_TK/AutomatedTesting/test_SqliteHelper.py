@@ -1,5 +1,5 @@
 import unittest
-from sqliteHelper.SqliteHelper import SqliteHelper
+from databaseHelpers.SqliteHelper import SqliteHelper
 
 class Test_SqliteHelper(unittest.TestCase):
 
@@ -16,8 +16,6 @@ class Test_SqliteHelper(unittest.TestCase):
 
 
     def tearDown(self):
-        
-        
         self.testHelper.close()
 
 
@@ -31,9 +29,9 @@ class Test_SqliteHelper(unittest.TestCase):
         self.testHelper.deleteTable(self.tableName)
         self.assertEqual(outcome,True)
     
-    def test_createArticleTable(self):
+    def test_createDocumentTable(self):
         name = self.articleTableName
-        self.testHelper.createArticleTable(name)
+        self.testHelper.createDocumentTable(name)
         outcome = self.testHelper.checkIfTableExists(name)
         self.testHelper.deleteTable(self.articleTableName)
         self.assertEqual(outcome,True)

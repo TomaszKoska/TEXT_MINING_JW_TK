@@ -1,6 +1,9 @@
+from databaseHelpers.AbstractDatabaseHelper import AbstractDatabaseHelper
+from dataModel.Document import Document
+
 import sqlite3
 
-class SqliteHelper(object):
+class SqliteHelper(AbstractDatabaseHelper):
     """description of class"""
     def __init__(self, databesePath):
         self.databasePath = databesePath
@@ -55,7 +58,7 @@ class SqliteHelper(object):
         output = output + ");"
         return output
 
-    def createArticleTable(self, tableName):
+    def createDocumentTable(self, tableName):
         listOfFields = {'ID' : "INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE",
         'TITLE' : "INTEGER",
         'CONTENT' : "TEXT",
@@ -64,9 +67,18 @@ class SqliteHelper(object):
         }
         self.createSimpleTable(tableName,listOfFields)
 
-    def saveDocument(self,document, tableName):
-        print("I tutaj Jacku dochodzi do zapiania dokumentu w bazie danych (tzn zaimplementuję to jak wrócę)")
-        print("argument numer 1 to dokument typu Document (zmieniłem ArticleClass na Document) a to drugie to nazwa tabeli jako string")
+    def saveDocument(self,document = Document(), tableName = ""):
+        #print("I tutaj Jacku dochodzi do zapiania dokumentu w bazie danych (tzn zaimplementuję to jak wrócę)")
+        #print("argument numer 1 to dokument typu Document (zmieniłem ArticleClass na Document) a to drugie to nazwa tabeli jako string")
+        query = "INSERT INTO " + tableName + " (TITLE, CONTENT, DATE,SOURCE) \
+          VALUES ('"+document.title +"','"+document.text+"','"+document.date+"','"+document.source+"')"
+        #print(query)
+        self.connection.execute(query);
+        self.connection.commit()
+
+
+
+
 
 
 if __name__ == '__main__':
