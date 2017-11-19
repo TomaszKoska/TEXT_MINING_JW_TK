@@ -4,4 +4,4 @@ class Document(object):
         self.Title = ""
         self.Text = ""
         self.Date = ""
-
+        self.Source = ""

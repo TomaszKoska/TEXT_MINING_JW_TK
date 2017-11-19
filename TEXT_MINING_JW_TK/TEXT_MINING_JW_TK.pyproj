@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>garbage\CrawlerTest.py</StartupFile>
+    <StartupFile>garbage\CrawlerFunctionTest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -40,6 +40,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="dataModel\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="garbage\CrawlerFunctionTest.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="garbage\CrawlerTest.py">
