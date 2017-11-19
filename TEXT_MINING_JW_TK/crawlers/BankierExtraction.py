@@ -42,14 +42,12 @@ def BankierNewsCrawler(site_start=1, last_site=1):
     from databaseHelpers.SqliteHelper import SqliteHelper
 
     #parametry które będa wejsciowe do funkcji
-    firstPage = 1
-    lastPage = 4
 
     BaseURL = 'https://www.bankier.pl'
     BankierNewsURL = 'https://www.bankier.pl/wiadomosc/'
     articles = []
 
-    for i in range(firstPage, lastPage):
+    for i in range(site_start, last_site):
         page = uLib.urlopen(BankierNewsURL + str(i))
         soup = BeautifulSoup(page, 'lxml')
 
