@@ -21,10 +21,10 @@ def BankierText(url):
     title_txt = soup.title.text.strip()
 
     article = Document()
-    article.Title = title_txt
-    article.Text = article_text  
-    article.Date = date
-    article.Source = url
+    article.title = title_txt
+    article.text = article_text  
+    article.date = date
+    article.source = url
     return article
 
 """
@@ -65,5 +65,5 @@ def BankierNewsCrawler(site_start=1, last_site=1):
         csv_writer = csv.writer(new_file, delimiter=';')
 
         for article in articles:
-            for paragraph in article.Text:
-                csv_writer.writerow([article.Title, article.Date, article.Source, paragraph])
+            for paragraph in article.text:
+                csv_writer.writerow([article.title, article.date, article.source, paragraph])
