@@ -24,6 +24,7 @@ def BankierText(url):
     article.Title = title_txt
     article.Text = article_text  
     article.Date = date
+    article.Source = url
     return article
 
 """
@@ -61,9 +62,10 @@ def BankierNewsCrawler(site_start=1, last_site=1):
             art = BankierText(link) 
             articles.append(art) 
 
-    with open('BannkierArticles ' + dt.now().strftime("%Y-%m-%d %H-%M-%S") + '.csv', 'w', newline='') as new_file:
+    with open('Bankier Articles sites ' +str(firstPage) + '-' + str(lastPage) + ' ' \
+            + dt.now().strftime("%Y-%m-%d %H-%M-%S") + '.csv', 'w', newline='') as new_file:
         csv_writer = csv.writer(new_file, delimiter=';')
 
         for article in articles:
             for paragraph in article.Text:
-                csv_writer.writerow([article.Title, article.Date, paragraph])
+                csv_writer.writerow([article.Title, article.Date, article.Source, paragraph])
