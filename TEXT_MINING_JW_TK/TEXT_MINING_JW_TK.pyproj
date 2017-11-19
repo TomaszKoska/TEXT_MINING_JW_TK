@@ -30,10 +30,13 @@
     <Compile Include="crawlers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="databaseHelpers\demonstration.py" />
+    <Compile Include="databaseHelpers\SqliteHelper.py" />
+    <Compile Include="databaseHelpers\test_SqliteHelper.py" />
     <Compile Include="databaseHelpers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="dataModel\ArticleClass.py">
+    <Compile Include="dataModel\Document.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="dataModel\__init__.py">

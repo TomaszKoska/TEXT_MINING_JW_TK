@@ -1,7 +1,7 @@
 
 import urllib.request as uLib
 from bs4 import BeautifulSoup
-from dataModel.ArticleClass import ArticleClass
+from dataModel.Document import Document
 from crawlers.BankierExtraction import BankierText
 
 
@@ -31,11 +31,11 @@ links = zip(links, dates)
 print(list(links)[1][1])
 #print("\n".join(dates))
 
-Articles = []
+articles = []
 for link in links:
     print("co my tu mamy?", link)
     art = BankierText(link[0])
     art.Date = link[1] 
-    Articles.append(art)
+    articles.append(art)
     print("a pod nim artykuł: ", art.Title)
 
