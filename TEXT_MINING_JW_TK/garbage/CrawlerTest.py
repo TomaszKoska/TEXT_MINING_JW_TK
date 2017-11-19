@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from dataModel.ArticleClass import ArticleClass
 from crawlers.BankierExtraction import BankierText
 
-#dfhkjhsd
 #parametry które będa wejsciowe do funkcji
 firstPage = 1
 lastPage = 4
