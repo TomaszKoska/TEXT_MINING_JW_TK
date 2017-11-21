@@ -17,3 +17,5 @@ class AbstractDatabaseHelper(object):
 
     def saveDocument(self,document = Document(), tableName = ""):
         pass
+    def getDocuments(self, tableName = ""):
+        pass

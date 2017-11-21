@@ -56,15 +56,18 @@ class CsvHelper(AbstractDatabaseHelper):
         pass
 
 
-#x = CsvHelper("D:/databases/csv")
-#x.createDocumentTable("someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.saveDocument(Document("Tytuł","JAKIŚ TEKST, JAKIŚ TEKST, JAKIŚ TEKST!!!!","2017-08-05","www.wp.pl"),"someName")
-#x.nextDocId("someName")
+    def getDocuments(self, tableName = "noNameGiven"):
+        documents = []
+        if tableName[-4:] != ".csv":
+            tableName = tableName + ".csv"
+        fullTableName = self.databasePath + tableName
+        with open(fullTableName, 'rt') as csvfile:
+            csvReader = csv.reader(csvfile, delimiter=self.delimiter, quotechar="\"")
+            for row in csvReader:
+                documents.append(Document(title=row[1], text=row[4], date=row[2], source=row[3]))
+                #print(documents.pop().text)
+            documents.remove(documents[0])
+        return documents
+
+
+
