@@ -29,8 +29,8 @@ for i in range(firstPage, lastPage+1):
         articles.append(art) 
 
 
-    myHelper = CsvHelper(databesePath="D:/databases/csv/",delimiter=",")
-    #myHelper = SqliteHelper(databesePath="D:/databases/bazka1.db")
+    #myHelper = CsvHelper(databesePath="D:/databases/csv/",delimiter=",")
+    myHelper = SqliteHelper(databesePath="D:/databases/bazka1.db")
 
 
     myHelper.start()
