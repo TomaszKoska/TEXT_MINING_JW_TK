@@ -71,13 +71,15 @@ class SqliteHelper(AbstractDatabaseHelper):
     def saveDocument(self,document = Document(), tableName = ""):
         #print("I tutaj Jacku dochodzi do zapiania dokumentu w bazie danych (tzn zaimplementuję to jak wrócę)")
         #print("argument numer 1 to dokument typu Document (zmieniłem ArticleClass na Document) a to drugie to nazwa tabeli jako string")
-        characters = [("'" , '"'),('"' , "'")]
-        [str(document.text).replace(x, y) for x, y in characters]
-        query = "INSERT INTO " + tableName + " (TITLE, CONTENT, DATE, SOURCE) \
-          VALUES ('"+str(document.title) +"','"+[str(document.text).replace(x, y) for x, y in characters] \
-              +"','"+ str(document.date)+"','"+str(document.source)+"')"
-        #print(query)
-        self.connection.execute(query);
+        
+
+        #query = "INSERT INTO " + tableName + " (TITLE, CONTENT, DATE, SOURCE) \
+        #  VALUES ('"+str(document.title) +"','"+documentContentToSave+"','"+ str(document.date)+"','"+str(document.source)+"')"
+        
+        query = "INSERT INTO "+tableName+" (TITLE, CONTENT, DATE, SOURCE) VALUES (?, ? , ? , ? )"
+        print(query)
+        self.connection.execute(query,(str(document.title),str(document.text),str(document.date),str(document.source)));
+        print("coś tam wrzucam...")
         self.connection.commit()
 
 
