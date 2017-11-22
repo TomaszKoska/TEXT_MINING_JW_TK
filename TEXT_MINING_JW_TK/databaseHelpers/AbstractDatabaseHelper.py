@@ -19,3 +19,12 @@ class AbstractDatabaseHelper(object):
         pass
     def getDocuments(self, tableName = ""):
         pass
+
+    def startIterator(self):
+        pass
+
+    def getNextDocument(self):
+        pass
+
+    def stopIterator(self):
+        pass

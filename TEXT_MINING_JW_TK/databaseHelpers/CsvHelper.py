@@ -69,5 +69,21 @@ class CsvHelper(AbstractDatabaseHelper):
             documents.remove(documents[0])
         return documents
 
+    def startIterator(self, tableName = "noNameGiven", skipHeader = True):
+         if tableName[-4:] != ".csv":
+            tableName = tableName + ".csv"
+         fullTableName = self.databasePath + tableName 
+         self.csvfile =  open(fullTableName, 'rt')
+         self.csvReaderIterator = csv.reader(self.csvfile, delimiter=self.delimiter, quotechar="\"")
+         if skipHeader:
+            self.csvReaderIterator.__next__()
 
+
+    def getNextDocument(self):
+        row = self.csvReaderIterator.__next__()
+        return Document(title=row[1], text=row[4], date=row[2], source=row[3])
+
+
+    def stopIterator(self):
+        self.csvfile.close()
 
