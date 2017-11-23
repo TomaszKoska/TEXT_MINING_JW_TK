@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AutomatedTesting\test_CsvHelper.py</StartupFile>
+    <StartupFile>cingCiangCiong\Base.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,10 +21,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AutomatedTesting\test_CingCiangCiongBase.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="AutomatedTesting\test_CsvHelper.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AutomatedTesting\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cingCiangCiong\Base.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="cingCiangCiong\__init__.py">
