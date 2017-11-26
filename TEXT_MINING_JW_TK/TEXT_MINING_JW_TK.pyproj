@@ -36,6 +36,9 @@
     <Compile Include="cingCiangCiong\Base.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="cingCiangCiong\Clean.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="cingCiangCiong\__init__.py">
       <SubType>Code</SubType>
     </Compile>
