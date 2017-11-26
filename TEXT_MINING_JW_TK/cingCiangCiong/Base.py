@@ -1,13 +1,24 @@
 from collections import namedtuple
+from cingCiangCiong.Clean import *
 
-def getallWords(documents = []):
+def getAllWords(documents = []):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #niechaj funkcja ta zwraca listę stringów - słów, które wystąpiły we wszystkich dokumentach
     #
+    for d in documents:
+        #czyszczenie z bzdet
+        d = removePunctuation(d)
+        d = doStemming(d)
+        # kurcze, co tu zrobić?
+        pass
+
+
+
+
     #bez duplikatów!
     pass
 
-def getallWordsIter(dbHelper=None):
+def getAllWordsIter(dbHelper=None):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
     pass
 
