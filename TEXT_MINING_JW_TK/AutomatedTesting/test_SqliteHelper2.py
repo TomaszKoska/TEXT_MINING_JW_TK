@@ -2,13 +2,15 @@ import unittest
 from databaseHelpers.SqliteHelper import SqliteHelper
 from dataModel.Document import Document
 import os
+import tempfile
+
 
 class Test_SqliteHelper2(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         try:
-            os.remove("D:/databases/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
+            os.remove(tempfile.gettempdir() + "/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
         except:
             pass
 

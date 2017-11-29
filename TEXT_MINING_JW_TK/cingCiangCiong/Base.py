@@ -1,26 +1,41 @@
 from collections import namedtuple
 from cingCiangCiong.Clean import *
+from dataModel.Document import Document
+import tempfile
+
 
 def getAllWords(documents = []):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #niechaj funkcja ta zwraca listę stringów - słów, które wystąpiły we wszystkich dokumentach
     #
+    outcome = []
     for d in documents:
-        #czyszczenie z bzdet
-        d = removePunctuation(d)
-        d = doStemming(d)
-        # kurcze, co tu zrobić?
-        pass
+        #rozbij dokument na pojedyncze słowa (czyli ze względu na spacje)
+        #weź słowo
+        #zapisz je w wynikach
+        outcome.extend(d.text.split(" "))
+        outcome = list(set(outcome))
+    return outcome
 
 
 
 
-    #bez duplikatów!
-    pass
-
-def getAllWordsIter(dbHelper=None):
+def getAllWordsIter(dbHelper=None, tableName=""):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
-    pass
+    outcome = []
+    dbHelper.startIterator(tableName)
+    try:
+        while(True):
+            d = dbHelper.getNextDocument()
+            outcome.extend(d.text.split(" "))
+            outcome = list(set(outcome))
+    except StopIteration:
+        dbHelper.stopIterator()
+
+    return outcome
+
+
+
 
 def getVocabCount(documents = [], allWords = [], sort=False):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej

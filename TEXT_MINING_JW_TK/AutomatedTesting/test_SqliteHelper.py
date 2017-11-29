@@ -1,10 +1,11 @@
 import unittest
 from databaseHelpers.SqliteHelper import SqliteHelper
+import tempfile
 
 class Test_SqliteHelper(unittest.TestCase):
 
     def setUp(self):
-        self.databasePath = "D:/databases/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db"
+        self.databasePath = tempfile.gettempdir() + "/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db"
         #self.databasePath = "D:/databases/test_db.db"
         self.testHelper = SqliteHelper(self.databasePath)
         self.listOfFields = {'NAME1' : "INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE",
