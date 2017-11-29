@@ -1,10 +1,12 @@
 import unittest
 from dataModel.Document import Document
 from databaseHelpers.CsvHelper import CsvHelper
+import tempfile
+
 
 class Test_CsvHelper(unittest.TestCase):
     def setUp(self):
-        self.testHelper = CsvHelper("D:/databases/csv")
+        self.testHelper = CsvHelper(tempfile.gettempdir())
         self.tableName = "someTestNameThatYouShouldNOTUse"
         self.testHelper.createDocumentTable(self.tableName)
         
