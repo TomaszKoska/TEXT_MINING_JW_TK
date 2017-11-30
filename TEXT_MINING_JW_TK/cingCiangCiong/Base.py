@@ -1,6 +1,7 @@
 from collections import namedtuple
 from cingCiangCiong.Clean import *
 from dataModel.Document import Document
+from collections import Counter
 import tempfile
 
 
@@ -20,7 +21,7 @@ def getAllWords(documents = []):
 
 
 
-def getAllWordsIter(dbHelper=None, tableName=""):
+def getAllWordsIter(dbHelper=None, tableName="NoNameGiven"):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
     outcome = []
     dbHelper.startIterator(tableName)
@@ -37,45 +38,78 @@ def getAllWordsIter(dbHelper=None, tableName=""):
 
 
 
-def getVocabCount(documents = [], allWords = [], sort=False):
+def getWordsCount(documents = [], allWords = []):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWords
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #przy czym liczby te to LICZBA WYSTĄPIEŃ
     #
-    #zadanie z gwiazdką: jeśli trzeci argument jest True, to niech zwracana lista będzie posortowana od najczęstszych słów do najrzadszych
+    words = []
+    for d in documents:
+        #rozbij dokument na pojedyncze słowa (czyli ze względu na spacje) i dodaj listę do obecnej listy
+        words.extend(d.text.split(" "))
+    counterOutput = dict(Counter(words))
+
+    output = {}
+
+    if len(allWords) == 0:
+        allWords = getAllWords(documents)
+
+    for w in allWords:
+        try:
+            output[w] = counterOutput[w]
+        except KeyError:
+            output[w] = 0
+
+    return output
+
+
+
+def getWordsCountIter(dbHelper=None, tableName="NoNameGiven", allWords = []):
+    words = []
+    dbHelper.startIterator(tableName)
+    try:
+        while(True):
+            d = dbHelper.getNextDocument()
+            words.extend(d.text.split(" "))
+    except StopIteration:
+        dbHelper.stopIterator()
+
+        counterOutput = dict(Counter(words))
+
+    output = {}
+
+    if len(allWords) == 0:
+        allWords = getAllWordsIter(dbHelper,tableName)
+
+    for w in allWords:
+        try:
+            output[w] = counterOutput[w]
+        except KeyError:
+            output[w] = 0
+
+    return output
+
     pass
 
-
-def getVocabCountIter(dbHelper=None, allWords = []):
-    #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
-    #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWordsIter
-    #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
-    #przy czym liczby te to LICZBA WYSTĄPIEŃ
-    #
-    #zadanie z gwiazdką: jeśli trzeci argument jest True, to niech zwracana lista będzie posortowana od najczęstszych słów do najrzadszych
-    pass
-
-def getVocabFrequency(documents = [], allWords = [], sort=False):
+def getWordsFrequency(documents = [], allWords = []):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWords
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #przy czym liczby te to LICZBA DOKUMENTÓW w których występuje słowo
     #
-    #zadanie z gwiazdką: jeśli trzeci argument jest True, to niech zwracana lista będzie posortowana od najczęstszych słów do najrzadszych
     pass
 
 
-def getVocabFrequencyIter(dbHelper=None, allWords = []):
+def getWordsFrequencyIter(dbHelper=None, allWords = []):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
     #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWordsIter
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #przy czym liczby te to LICZBA DOKUMENTÓW w których występuje słowo
     #
-    #zadanie z gwiazdką: jeśli trzeci argument jest True, to niech zwracana lista będzie posortowana od najczęstszych słów do najrzadszych
     pass
 
-def getVocabCofrequency(documents = [], allWords = [], sort=False):
+def getWordsCofrequency(documents = [], allWords = []):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWords
     #niechaj funkcja ta zwraca coś w stylu lity
@@ -87,11 +121,10 @@ def getVocabCofrequency(documents = [], allWords = [], sort=False):
     #https://stackoverflow.com/questions/15418386/what-is-the-best-data-structure-for-storing-a-set-of-four-or-more-values
     #przy czym liczby te to LICZBA DOKUMENTÓW w których słowa występują wspólnie
     #
-    #zadanie z gwiazdką: jeśli trzeci argument jest True, to niech zwracana lista będzie posortowana po liczbie wspólnych wystąpień
     pass
 
 
-def getVocabCofrequencyIter(dbHelper=None, allWords = []):
+def getWordsCofrequencyIter(dbHelper=None, allWords = []):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
 #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWords
     #niechaj funkcja ta zwraca coś w stylu lity

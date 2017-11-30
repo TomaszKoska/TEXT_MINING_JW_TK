@@ -58,13 +58,35 @@ class Test_CingCiangCiongBase(unittest.TestCase):
         expectedOutcome = ["A","THE","GOAT","HERBIVORE","BIRD","SHEEP","COW","EATS","FLOWER","VEGETABLE","GRASS","PLANT","TOMATO"]
         outcome = getAllWords(docs)
         self.assertEqual(len(list(set(outcome) - set(expectedOutcome))),0)
-
+        self.assertEqual(len(list(set(expectedOutcome) - set(outcome))),0)
 
     def test_getAllWordsIter(self):
         expectedOutcome = ["A","THE","GOAT","HERBIVORE","BIRD","SHEEP","COW","EATS","FLOWER","VEGETABLE","GRASS","PLANT","TOMATO"]
         outcome = getAllWordsIter(self.testHelper,self.tableName)
         self.assertEqual(len(list(set(outcome) - set(expectedOutcome))),0)
+        self.assertEqual(len(list(set(expectedOutcome) - set(outcome))),0)
 
+    def test_getWordsCountEmptyWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsCount(documents=docs),{'A': 20, 'GOAT': 3, 'EATS': 16, 'THE': 12, 'FLOWER': 4, 'HERBIVORE': 8, 'BIRD': 1, 'VEGETABLE': 2, 'GRASS': 2, 'SHEEP': 1, 'PLANT': 7, 'COW': 3, 'TOMATO': 1})
+    
+    def test_getWordsCountSomeWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsCount(documents=docs,allWords=["A","THE"]),{'A': 20, 'THE': 12})
+    
+    def test_getWordsCountSomeWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsCount(documents=docs,allWords=["A","THE","FOOOO"]),{'A': 20, 'THE': 12, 'FOOOO' : 0}) #great!!!
+    
+    def test_getWordsCountIterEmptyWordList(self):
+        print(self.tableName)
+        self.assertEqual(getWordsCountIter(dbHelper=self.testHelper,tableName=self.tableName),{'A': 20, 'GOAT': 3, 'EATS': 16, 'THE': 12, 'FLOWER': 4, 'HERBIVORE': 8, 'BIRD': 1, 'VEGETABLE': 2, 'GRASS': 2, 'SHEEP': 1, 'PLANT': 7, 'COW': 3, 'TOMATO': 1})
+    
+    def test_getWordsCountIterSomeWordList(self):
+        self.assertEqual(getWordsCountIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE"]),{'A': 20, 'THE': 12})
+    
+    def test_getWordsCountIterSomeWordList(self):
+        self.assertEqual(getWordsCountIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE","FOOOO"]),{'A': 20, 'THE': 12, 'FOOOO' : 0}) #great!!!
 
 if __name__ == '__main__':
     unittest.main()
