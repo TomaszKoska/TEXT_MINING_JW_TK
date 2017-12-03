@@ -88,5 +88,32 @@ class Test_CingCiangCiongBase(unittest.TestCase):
     def test_getWordsCountIterSomeWordList(self):
         self.assertEqual(getWordsCountIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE","FOOOO"]),{'A': 20, 'THE': 12, 'FOOOO' : 0}) #great!!!
 
+
+    def test_getWordsFrequencyEmptyWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsFrequency(documents=docs),{'A': 20/80, 'GOAT': 3/80, 'EATS': 16/80, 'THE': 12/80, 'FLOWER': 4/80, 'HERBIVORE': 8/80, 'BIRD': 1/80, 'VEGETABLE': 2/80, 'GRASS': 2/80, 'SHEEP': 1/80, 'PLANT': 7/80, 'COW': 3/80, 'TOMATO': 1/80})
+    
+    def test_getWordsFrequencySomeWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsFrequency(documents=docs,allWords=["A","THE"]),{'A': 20/32, 'THE': 12/32})
+    
+    def test_getWordsFrequencySomeWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsFrequency(documents=docs,allWords=["A","THE","FOOOO"]),{'A': 20/32, 'THE': 12/32, 'FOOOO' : 0/32}) #great!!!
+
+
+    def test_getWordsFrequencyIterEmptyWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsFrequencyIter(dbHelper=self.testHelper,tableName=self.tableName),{'A': 20/80, 'GOAT': 3/80, 'EATS': 16/80, 'THE': 12/80, 'FLOWER': 4/80, 'HERBIVORE': 8/80, 'BIRD': 1/80, 'VEGETABLE': 2/80, 'GRASS': 2/80, 'SHEEP': 1/80, 'PLANT': 7/80, 'COW': 3/80, 'TOMATO': 1/80})
+    
+    def test_getWordsFrequencyIterSomeWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsFrequencyIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE"]),{'A': 20/32, 'THE': 12/32})
+    
+    def test_getWordsFrequencyIterSomeWordList(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWordsFrequencyIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE","FOOOO"]),{'A': 20/32, 'THE': 12/32, 'FOOOO' : 0/32}) #great!!!
+
+    
 if __name__ == '__main__':
     unittest.main()

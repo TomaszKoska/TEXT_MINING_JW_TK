@@ -90,54 +90,42 @@ def getWordsCountIter(dbHelper=None, tableName="NoNameGiven", allWords = []):
 
     return output
 
-    pass
-
 def getWordsFrequency(documents = [], allWords = []):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWords
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
-    #przy czym liczby te to LICZBA DOKUMENTÓW w których występuje słowo
-    #
-    pass
+
+    if len(allWords) == 0:
+        allWords = getAllWords(documents)
+
+    counts = getWordsCount(documents,allWords)
+    total = sum(counts.values())#wszystkich słów istotnych z punktu widzenia allWords
 
 
-def getWordsFrequencyIter(dbHelper=None, allWords = []):
+    for k,v in counts.items():
+        counts[k]=v/total
+
+    return counts
+
+
+def getWordsFrequencyIter(dbHelper=None, tableName="NoNameGiven",  allWords = []):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
     #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWordsIter
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #przy czym liczby te to LICZBA DOKUMENTÓW w których występuje słowo
-    #
-    pass
 
-def getWordsCofrequency(documents = [], allWords = []):
-    #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
-    #jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWords
-    #niechaj funkcja ta zwraca coś w stylu lity
-    #(word1="kot",word2="Azor",cofrequency=0)
-    #(word1="kot",word2="Mruczek",cofrequency=10)
-    #(word1="kot",word2="pies",cofrequency=2)
-    #etc...
-    # to powyżej to pseudo kod, info spod linku niżej może pomóc
-    #https://stackoverflow.com/questions/15418386/what-is-the-best-data-structure-for-storing-a-set-of-four-or-more-values
-    #przy czym liczby te to LICZBA DOKUMENTÓW w których słowa występują wspólnie
-    #
-    pass
+    if len(allWords) == 0:
+        allWords = getAllWordsIter(dbHelper,tableName)
+
+    counts = getWordsCountIter(dbHelper,tableName,allWords)
+    total = sum(counts.values())#wszystkich słów istotnych z punktu widzenia allWords
 
 
-def getWordsCofrequencyIter(dbHelper=None, allWords = []):
-    #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
-#jeśli drugi argument jest pustą listą (nie podano go) to niech ta funkcja wykorzysta getallWords
-    #niechaj funkcja ta zwraca coś w stylu lity
-    #(word1="kot",word2="Azor",cofrequency=0)
-    #(word1="kot",word2="Mruczek",cofrequency=10)
-    #(word1="kot",word2="pies",cofrequency=2)
-    #etc...
-    # to powyżej to pseudo kod, info spod linku niżej może pomóc
-    #https://stackoverflow.com/questions/15418386/what-is-the-best-data-structure-for-storing-a-set-of-four-or-more-values
-    #przy czym liczby te to LICZBA DOKUMENTÓW w których słowa występują wspólnie
-    #
-    #zadanie z gwiazdką: jeśli trzeci argument jest True, to niech zwracana lista będzie posortowana po liczbie wspólnych wystąpień
-    pass
+    for k,v in counts.items():
+        counts[k]=v/total
+
+    return counts
+
 
 
 def getLeftContext(documents = [], word = "", distance = 1, allWords = []):
