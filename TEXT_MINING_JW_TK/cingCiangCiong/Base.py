@@ -138,10 +138,40 @@ def getLeftContext(documents = [], word = "", distance = 1, allWords = []):
     #słowo "Ten" wystąpiło 10 razy po lewej stronie słowa "pies" w odległości NIE WIĘKSZEJ niż 2
     #słowo "Tamten" wystąpiło 23 razy po lewej stronie słowa "pies" w odległości NIE WIĘKSZEJ niż 2
     #itd.
+    if len(allWords) == 0:
+        allWords = getAllWords(documents)
     
-    pass
+    context =[]
+    for d in documents:
+        words = d.text.split(" ")
+        #print(words)
+        #print(range(0,len(words)-distance))
+        for i in range(0,len(words)-distance):
+            #print("checked "+words[i])
+            #print(range(i+1,distance+i+1))
+            for j in range(i+1,distance+i+1):
+                #print("     against "+ words[j])
+                if word == words[j]:
+                    #print("BINGO!   word "+ word +"     "+ words[i]+"     "+words[j])
+                    context.append(words[i])
+                    
+    context= dict(Counter(context))
+    total = sum(context.values())
+    print(total)
+    output={}
+    for w in allWords:
+        try:
+            output[w] = context[w]/total
+        except KeyError:
+            output[w] = 0
 
-def getLeftContextIter(dbHelper=None, word = "", distance = 1, allWords = []):
+    print(output)
+    return output
+
+
+
+
+def getLeftContextIter(dbHelper=None, tableName="NoNameGiven", word = "", distance = 1, allWords = []):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #example:
@@ -151,7 +181,37 @@ def getLeftContextIter(dbHelper=None, word = "", distance = 1, allWords = []):
     #słowo "Ten" wystąpiło 10 razy po lewej stronie słowa "pies" w odległości NIE WIĘKSZEJ niż 2
     #słowo "Tamten" wystąpiło 23 razy po lewej stronie słowa "pies" w odległości NIE WIĘKSZEJ niż 2
     #itd.
-    pass
+
+    if len(allWords) == 0:
+        allWords = getAllWordsIter(dbHelper,tableName)
+
+    context =[]
+    dbHelper.startIterator(tableName)
+    try:
+        while(True):
+            d = dbHelper.getNextDocument()
+            words = d.text.split(" ")
+            #print(words)
+            for i in range(0,len(words)-distance):
+                for j in range(i+1,distance+i+1):
+                    if word == words[j]:
+                        context.append(words[i])
+    except StopIteration:
+        dbHelper.stopIterator()
+   
+                    
+    context= dict(Counter(context))
+    total = sum(context.values())
+    print(total)
+    output={}
+    for w in allWords:
+        try:
+            output[w] = context[w]/total
+        except KeyError:
+            output[w] = 0
+
+    print(output)
+    return output
 
 
 def getRightContext(documents = [], word = "", distance = 1, allWords = []):
