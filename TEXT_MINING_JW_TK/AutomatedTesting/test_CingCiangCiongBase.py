@@ -133,9 +133,6 @@ class Test_CingCiangCiongBase(unittest.TestCase):
         self.assertEqual(getLeftContext(documents=docs,word="PUPA",distance=2,allWords=["GOAT","HERBIVORE","PUPA"]),{'GOAT': 0, 'HERBIVORE': 0,'PUPA' : 0})
 
 
-
-
-
     def test_getLeftContextIterEmptyWordList(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="EATS",distance=1),{'GOAT': 0.1875, 'HERBIVORE': 0.5, 'BIRD': 0.0625, 'SHEEP': 0.0625, 'COW': 0.1875, 'THE': 0, 'EATS': 0, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
