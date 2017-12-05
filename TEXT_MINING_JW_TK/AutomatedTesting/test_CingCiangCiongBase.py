@@ -59,6 +59,10 @@ class Test_CingCiangCiongBase(unittest.TestCase):
         outcome = getAllWords(docs)
         self.assertEqual(len(list(set(outcome) - set(expectedOutcome))),0)
         self.assertEqual(len(list(set(expectedOutcome) - set(outcome))),0)
+        expectedOutcome = ["A","THE","GOAT"]
+        outcome = getAllWords(Document(title="TEST!", text="A THE GOAT", date="", source=""))
+        self.assertEqual(len(list(set(outcome) - set(expectedOutcome))),0)
+        self.assertEqual(len(list(set(expectedOutcome) - set(outcome))),0)
 
     def test_getAllWordsIter(self):
         expectedOutcome = ["A","THE","GOAT","HERBIVORE","BIRD","SHEEP","COW","EATS","FLOWER","VEGETABLE","GRASS","PLANT","TOMATO"]
@@ -66,38 +70,26 @@ class Test_CingCiangCiongBase(unittest.TestCase):
         self.assertEqual(len(list(set(outcome) - set(expectedOutcome))),0)
         self.assertEqual(len(list(set(expectedOutcome) - set(outcome))),0)
 
-    def test_getWordsCountEmptyWordList(self):
+    def test_getWordsCount(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsCount(documents=docs),{'A': 20, 'GOAT': 3, 'EATS': 16, 'THE': 12, 'FLOWER': 4, 'HERBIVORE': 8, 'BIRD': 1, 'VEGETABLE': 2, 'GRASS': 2, 'SHEEP': 1, 'PLANT': 7, 'COW': 3, 'TOMATO': 1})
-    
-    def test_getWordsCountSomeWordList(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsCount(documents=docs,allWords=["A","THE"]),{'A': 20, 'THE': 12})
-    
-    def test_getWordsCountSomeWordList2(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsCount(documents=docs,allWords=["A","THE","FOOOO"]),{'A': 20, 'THE': 12, 'FOOOO' : 0}) #great!!!
     
-    def test_getWordsCountIterEmptyWordList(self):
-        print(self.tableName)
+    def test_getWordsCountIter(self):
+        #print(self.tableName)
         self.assertEqual(getWordsCountIter(dbHelper=self.testHelper,tableName=self.tableName),{'A': 20, 'GOAT': 3, 'EATS': 16, 'THE': 12, 'FLOWER': 4, 'HERBIVORE': 8, 'BIRD': 1, 'VEGETABLE': 2, 'GRASS': 2, 'SHEEP': 1, 'PLANT': 7, 'COW': 3, 'TOMATO': 1})
-    
-    def test_getWordsCountIterSomeWordList(self):
         self.assertEqual(getWordsCountIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE"]),{'A': 20, 'THE': 12})
-    
-    def test_getWordsCountIterSomeWordList2(self):
         self.assertEqual(getWordsCountIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE","FOOOO"]),{'A': 20, 'THE': 12, 'FOOOO' : 0}) #great!!!
 
 
-    def test_getWordsFrequencyEmptyWordList(self):
+    def test_getWordsFrequency(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsFrequency(documents=docs),{'A': 20/80, 'GOAT': 3/80, 'EATS': 16/80, 'THE': 12/80, 'FLOWER': 4/80, 'HERBIVORE': 8/80, 'BIRD': 1/80, 'VEGETABLE': 2/80, 'GRASS': 2/80, 'SHEEP': 1/80, 'PLANT': 7/80, 'COW': 3/80, 'TOMATO': 1/80})
-    
-    def test_getWordsFrequencySomeWordList(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsFrequency(documents=docs,allWords=["A","THE"]),{'A': 20/32, 'THE': 12/32})
-    
-    def test_getWordsFrequencySomeWordList2(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsFrequency(documents=docs,allWords=["A","THE","FOOOO"]),{'A': 20/32, 'THE': 12/32, 'FOOOO' : 0/32}) #great!!!
 
@@ -105,26 +97,19 @@ class Test_CingCiangCiongBase(unittest.TestCase):
     def test_getWordsFrequencyIterEmptyWordList(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsFrequencyIter(dbHelper=self.testHelper,tableName=self.tableName),{'A': 20/80, 'GOAT': 3/80, 'EATS': 16/80, 'THE': 12/80, 'FLOWER': 4/80, 'HERBIVORE': 8/80, 'BIRD': 1/80, 'VEGETABLE': 2/80, 'GRASS': 2/80, 'SHEEP': 1/80, 'PLANT': 7/80, 'COW': 3/80, 'TOMATO': 1/80})
-    
-    def test_getWordsFrequencyIterSomeWordList(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsFrequencyIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE"]),{'A': 20/32, 'THE': 12/32})
-    
-    def test_getWordsFrequencyIterSomeWordList2(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getWordsFrequencyIter(dbHelper=self.testHelper,tableName=self.tableName,allWords=["A","THE","FOOOO"]),{'A': 20/32, 'THE': 12/32, 'FOOOO' : 0/32}) #great!!!
 
 
 
-    def test_getLeftContextEmptyWordList(self):
+    def test_getLeftContext(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getLeftContext(documents=docs,word="EATS",distance=1),{'GOAT': 0.1875, 'HERBIVORE': 0.5, 'BIRD': 0.0625, 'SHEEP': 0.0625, 'COW': 0.1875, 'THE': 0, 'EATS': 0, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
         self.assertEqual(getLeftContext(documents=docs,word="THE",distance=1),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0, 'COW': 0, 'THE': 0, 'EATS': 7/7, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
         self.assertEqual(getLeftContext(documents=docs,word="THE",distance=2),{'GOAT': 2/14, 'HERBIVORE': 3/14, 'BIRD': 1/14, 'SHEEP': 1/14,'COW': 0, 'THE': 0, 'EATS': 7/14, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
         self.assertEqual(getLeftContext(documents=docs,word="PUPA",distance=2),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0,'COW': 0, 'THE': 0, 'EATS': 0, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
-
-
-    def test_getLeftContextSomeWordList(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getLeftContext(documents=docs,word="EATS",distance=1,allWords=["GOAT","HERBIVORE"]),{'GOAT': 0.1875, 'HERBIVORE': 0.5})
         self.assertEqual(getLeftContext(documents=docs,word="THE",distance=1,allWords=["GOAT","HERBIVORE"]),{'GOAT': 0, 'HERBIVORE': 0})
@@ -133,15 +118,12 @@ class Test_CingCiangCiongBase(unittest.TestCase):
         self.assertEqual(getLeftContext(documents=docs,word="PUPA",distance=2,allWords=["GOAT","HERBIVORE","PUPA"]),{'GOAT': 0, 'HERBIVORE': 0,'PUPA' : 0})
 
 
-    def test_getLeftContextIterEmptyWordList(self):
+    def test_getLeftContextIter(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="EATS",distance=1),{'GOAT': 0.1875, 'HERBIVORE': 0.5, 'BIRD': 0.0625, 'SHEEP': 0.0625, 'COW': 0.1875, 'THE': 0, 'EATS': 0, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="THE",distance=1),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0, 'COW': 0, 'THE': 0, 'EATS': 7/7, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="THE",distance=2),{'GOAT': 2/14, 'HERBIVORE': 3/14, 'BIRD': 1/14, 'SHEEP': 1/14,'COW': 0, 'THE': 0, 'EATS': 7/14, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="PUPA",distance=2),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0,'COW': 0, 'THE': 0, 'EATS': 0, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
-
-
-    def test_getLeftContextIterSomeWordList(self):
         docs = self.testHelper.getDocuments(self.tableName)
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="EATS",distance=1,allWords=["GOAT","HERBIVORE"]),{'GOAT': 0.1875, 'HERBIVORE': 0.5})
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="THE",distance=1,allWords=["GOAT","HERBIVORE"]),{'GOAT': 0, 'HERBIVORE': 0})
@@ -149,6 +131,41 @@ class Test_CingCiangCiongBase(unittest.TestCase):
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="PUPA",distance=2,allWords=["GOAT","HERBIVORE"]),{'GOAT': 0, 'HERBIVORE': 0})
         self.assertEqual(getLeftContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="PUPA",distance=2,allWords=["GOAT","HERBIVORE","PUPA"]),{'GOAT': 0, 'HERBIVORE': 0,'PUPA' : 0})
     
+    def test_getRightContext(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getRightContext(documents=docs,word="EATS",distance=1),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0, 'COW': 0, 'THE': 7/16, 'EATS': 0, 'A': 9/16, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
+        self.assertEqual(getRightContext(documents=docs,word="EATS",distance=2),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0,'COW': 0, 'THE': 7/32, 'EATS': 0, 'A': 9/32, 'FLOWER': 4/32, 'VEGETABLE': 2/32, 'GRASS': 2/32, 'TOMATO': 1/32, 'PLANT': 7/32})
+        self.assertEqual(getRightContext(documents=docs,word="PUPA",distance=2),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0,'COW': 0, 'THE': 0, 'EATS': 0, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getRightContext(documents=docs,word="EATS",distance=1,allWords=["A","THE"]),{'A': 9/16, 'THE': 7/16})
+        self.assertEqual(getRightContext(documents=docs,word="THE",distance=1,allWords=["A","THE"]),{'A': 0, 'THE': 0})
+        self.assertEqual(getRightContext(documents=docs,word="EATS",distance=2,allWords=["A","THE"]),{'A': 9/32, 'THE': 7/32})
+        self.assertEqual(getRightContext(documents=docs,word="PUPA",distance=2,allWords=["A","THE"]),{'A': 0, 'THE': 0})
+        self.assertEqual(getRightContext(documents=docs,word="PUPA",distance=2,allWords=["A","THE","PUPA"]),{'A': 0, 'THE': 0,'PUPA' : 0})
+
+    def test_getRightContextIter(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getRightContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="EATS",distance=1),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0, 'COW': 0, 'THE': 7/16, 'EATS': 0, 'A': 9/16, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
+        self.assertEqual(getRightContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="EATS",distance=2),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0,'COW': 0, 'THE': 7/32, 'EATS': 0, 'A': 9/32, 'FLOWER': 4/32, 'VEGETABLE': 2/32, 'GRASS': 2/32, 'TOMATO': 1/32, 'PLANT': 7/32})
+        self.assertEqual(getRightContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="PUPA",distance=2),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0,'COW': 0, 'THE': 0, 'EATS': 0, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getRightContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="EATS",distance=1,allWords=["A","THE"]),{'A': 9/16, 'THE': 7/16})
+        self.assertEqual(getRightContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="THE",distance=1,allWords=["A","THE"]),{'A': 0, 'THE': 0})
+        self.assertEqual(getRightContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="EATS",distance=2,allWords=["A","THE"]),{'A': 9/32, 'THE': 7/32})
+        self.assertEqual(getRightContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="PUPA",distance=2,allWords=["A","THE"]),{'A': 0, 'THE': 0})
+        self.assertEqual(getRightContextIter(dbHelper=self.testHelper,tableName=self.tableName,word="PUPA",distance=2,allWords=["A","THE","PUPA"]),{'A': 0, 'THE': 0,'PUPA' : 0})
+
+    def test_getWindowContext(self):
+        docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWindowContext(documents=docs,word="EATS",distance=1),{'GOAT' : 3/32 , 'HERBIVORE' : 8/32 , 'BIRD' : 1/32 , 'SHEEP' : 1/32 ,'COW' : 3/32 ,'EATS' : 0/32 ,'THE' : 7/32 ,'A' : 9/32 ,'FLOWER' : 0/32 ,'VEGETABLE' : 0/32 ,'GRASS' : 0/32 ,'PLANT' : 0/32 ,'TOMATO' : 0/32})
+        self.assertEqual(getWindowContext(documents=docs,word="EATS",distance=2),{'GOAT' : 3/64 , 'HERBIVORE' : 8/64 , 'BIRD' : 1/64 , 'SHEEP' : 1/64 , 'COW' : 3/64 , 'EATS' : 0/64 , 'THE' : 12/64 , 'A' : 20/64 , 'FLOWER' : 4/64 , 'VEGETABLE' : 2/64 , 'GRASS' : 2/64 , 'PLANT' : 7/64 , 'TOMATO' : 1/64 })
+        self.assertEqual(getWindowContext(documents=docs,word="PUPA",distance=2),{'GOAT': 0, 'HERBIVORE': 0, 'BIRD': 0, 'SHEEP': 0,'COW': 0, 'THE': 0, 'EATS': 0, 'A': 0, 'FLOWER': 0, 'VEGETABLE': 0, 'GRASS': 0, 'TOMATO': 0, 'PLANT': 0})
+        #docs = self.testHelper.getDocuments(self.tableName)
+        self.assertEqual(getWindowContext(documents=docs,word="EATS",distance=2,allWords=["A","THE"]),{'A': 20/32, 'THE': 12/32})
+        self.assertEqual(getWindowContext(documents=docs,word="EATS",distance=1,allWords=["EATS"]),{'EATS': 0})
+        self.assertEqual(getWindowContext(documents=docs,word="PUPA",distance=2,allWords=["A","THE"]),{'A': 0, 'THE': 0})
+        self.assertEqual(getWindowContext(documents=docs,word="PUPA",distance=2,allWords=["A","THE","PUPA"]),{'A': 0, 'THE': 0,'PUPA' : 0})
+
 
     
 if __name__ == '__main__':
