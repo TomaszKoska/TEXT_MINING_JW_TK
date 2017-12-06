@@ -137,7 +137,7 @@ def getWordsFrequencyIter(dbHelper=None, tableName="NoNameGiven",  allWords = []
 
 
 
-def getLeftContext(documents = [], word = "", distance = 1, allWords = []):
+def getLeftContext(documents = [], word = "", distance = 1, allWords = [], freq = False):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #example:
@@ -147,6 +147,7 @@ def getLeftContext(documents = [], word = "", distance = 1, allWords = []):
     #słowo "Ten" wystąpiło 10 razy po lewej stronie słowa "pies" w odległości NIE WIĘKSZEJ niż 2
     #słowo "Tamten" wystąpiło 23 razy po lewej stronie słowa "pies" w odległości NIE WIĘKSZEJ niż 2
     #itd.
+    #parametr freq mówi czy zwracamy prawdopodobieństwo (true) czy liczbę wystąpień (false)
     if (type(documents) is Document):
         documents=[documents]
 
@@ -162,7 +163,12 @@ def getLeftContext(documents = [], word = "", distance = 1, allWords = []):
                     context.append(words[i])
                     
     context= dict(Counter(context))
-    total = sum(context.values())
+    
+    if freq:
+        total = sum(context.values())
+    else:
+        total=1
+
     output={}
     for w in allWords:
         try:
@@ -175,7 +181,7 @@ def getLeftContext(documents = [], word = "", distance = 1, allWords = []):
 
 
 
-def getLeftContextIter(dbHelper=None, tableName="NoNameGiven", word = "", distance = 1, allWords = []):
+def getLeftContextIter(dbHelper=None, tableName="NoNameGiven", word = "", distance = 1, allWords = [], freq = False):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #example:
@@ -204,7 +210,11 @@ def getLeftContextIter(dbHelper=None, tableName="NoNameGiven", word = "", distan
    
                     
     context= dict(Counter(context))
-    total = sum(context.values())
+    if freq:
+        total = sum(context.values())
+    else:
+        total=1
+
     output={}
     for w in allWords:
         try:
@@ -215,7 +225,7 @@ def getLeftContextIter(dbHelper=None, tableName="NoNameGiven", word = "", distan
     return output
 
 
-def getRightContext(documents = [], word = "", distance = 1, allWords = []):
+def getRightContext(documents = [], word = "", distance = 1, allWords = [], freq = False):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #example:
@@ -240,7 +250,12 @@ def getRightContext(documents = [], word = "", distance = 1, allWords = []):
                     context.append(words[i])
                     
     context= dict(Counter(context))
-    total = sum(context.values())
+    
+    if freq:
+        total = sum(context.values())
+    else:
+        total=1
+
     output={}
     for w in allWords:
         try:
@@ -250,7 +265,7 @@ def getRightContext(documents = [], word = "", distance = 1, allWords = []):
 
     return output
 
-def getRightContextIter(dbHelper=None, tableName="NoNameGiven", word = "", distance = 1, allWords = []):
+def getRightContextIter(dbHelper=None, tableName="NoNameGiven", word = "", distance = 1, allWords = [], freq = False):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #example:
@@ -278,7 +293,12 @@ def getRightContextIter(dbHelper=None, tableName="NoNameGiven", word = "", dista
    
                     
     context= dict(Counter(context))
-    total = sum(context.values())
+    
+    if freq:
+        total = sum(context.values())
+    else:
+        total=1
+
     output={}
     for w in allWords:
         try:
@@ -288,7 +308,7 @@ def getRightContextIter(dbHelper=None, tableName="NoNameGiven", word = "", dista
 
     return output
 
-def getWindowContext(documents = [], word = "", distance = 1, allWords = []):
+def getWindowContext(documents = [], word = "", distance = 1, allWords = [], freq = False):
     #niechaj funkcja ta bazuje na liście dokumentów wczytanych wcześniej
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #example:
@@ -320,17 +340,18 @@ def getWindowContext(documents = [], word = "", distance = 1, allWords = []):
             output[w] = context[w]/1
         except KeyError:
             output[w] = 0
-    total = sum(output.values())
+    if freq:
+        total = sum(output.values())
+        for w in allWords:
+            try:
+                output[w]=output[w]/total
+            except ZeroDivisionError:
+                output[w]=0
 
-    for w in allWords:
-        try:
-            output[w]=output[w]/total
-        except ZeroDivisionError:
-            output[w]=0
     return output
 
 
-def getWindowContextIter(dbHelper=None, word = "", distance = 1, allWords = []):
+def getWindowContextIter(dbHelper=None, tableName="NoNameGiven", word = "", distance = 1, allWords = [], freq = False):
     #niechaj funkcja ta bazuje na iteratorze - tzn niech przyjmuje dbHelpera
     #niechaj funkcja ta zwraca słownik (dictionary) {"słowo": 1, "słowo2": 400, "słowo3": 435 ...}
     #example:
@@ -340,9 +361,10 @@ def getWindowContextIter(dbHelper=None, word = "", distance = 1, allWords = []):
     #słowo "Ten" wystąpiło 10 razy po prawej lub lewej stronie słowa "pies" w odległości NIE WIĘKSZEJ niż 2
     #słowo "Tamten" wystąpiło 23 razy po prawej lub lewej stronie słowa "pies" w odległości NIE WIĘKSZEJ niż 2
     #itd.
+
     if len(allWords) == 0:
         allWords = getAllWordsIter(dbHelper,tableName)
-
+    
     context =[]
     dbHelper.startIterator(tableName)
     try:
@@ -350,30 +372,28 @@ def getWindowContextIter(dbHelper=None, word = "", distance = 1, allWords = []):
             d = dbHelper.getNextDocument()
             words = d.text.split(" ")
             for i in range(distance,len(words)-distance):
-                for j in range(i-distance,distance+i+1):
-                    if word == words[j] and i!=j:
-                        context.append(words[i])
+                if word == words[i]:
+                    for j in range(i-distance,i+distance+1):
+                        if  i != j:
+                            context.append(words[j])
     except StopIteration:
         dbHelper.stopIterator()
-   
-                    
     context= dict(Counter(context))
-    total = sum(context.values())
+
     output={}
     for w in allWords:
         try:
-            output[w] = context[w]/total
+            output[w] = context[w]/1
         except KeyError:
             output[w] = 0
 
-    return output 
+    if freq:
+        total = sum(output.values())
+        for w in allWords:
+            try:
+                output[w]=output[w]/total
+            except ZeroDivisionError:
+                output[w]=0
 
-def BM25(context):
-    pass
+    return output
 
-
-def similarity(context1, context2):
-    pass
-
-def similarityIDF(context1, context2):
-    pass
