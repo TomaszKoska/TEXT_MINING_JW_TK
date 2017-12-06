@@ -9,6 +9,11 @@ class SqliteHelper(AbstractDatabaseHelper):
     def __init__(self, databesePath):
         self.databasePath = databesePath
         self.connection = None
+        
+        #dla iteratora
+        self.currentRowId = 0
+        self.iteratorTablename = ""
+
 
     def start(self):
         self.connection = sqlite3.connect( self.databasePath)
@@ -77,12 +82,43 @@ class SqliteHelper(AbstractDatabaseHelper):
         #  VALUES ('"+str(document.title) +"','"+documentContentToSave+"','"+ str(document.date)+"','"+str(document.source)+"')"
         
         query = "INSERT INTO "+tableName+" (TITLE, CONTENT, DATE, SOURCE) VALUES (?, ? , ? , ? )"
-        print(query)
+        #print(query)
         self.connection.execute(query,(str(document.title),str(document.text),str(document.date),str(document.source)));
-        print("coś tam wrzucam...")
+        #print("coś tam wrzucam...")
         self.connection.commit()
 
+    
+    def getDocuments(self, tableName = "noNameGiven"):
+        documents = []
+        cursor = self.connection.execute("SELECT ID, TITLE, CONTENT, DATE, SOURCE  from " + tableName)
+        for row in cursor:
+           print ("TITLE = ", row[1])
+           print ("CONTENT = ", row[2])
+           print ("DATE = ", row[3])
+           print ("SOURCE = ", row[4], "\n")
+           documents.append(Document(title=row[1], text=row[2], date=row[3], source=row[4]))
 
+        return documents;
+
+
+    def startIterator(self, tableName = "noNameGiven"):
+        self.currentRowId = 0
+        self.iteratorTablename = tableName
+        #select * from  pozdro where id > 10 limit 1
+
+
+    def getNextDocument(self):
+        cursor = self.connection.execute("SELECT ID, TITLE, CONTENT, DATE, SOURCE  from " + self.iteratorTablename + " WHERE ID > " + str(self.currentRowId) + " LIMIT 1;")
+        for row in cursor:
+            self.currentRowId = int(row[0])
+            #print("Coś do zwrócenia!")
+            return Document(title=row[1], text=row[2], date=row[3], source=row[4])
+        #print("Nic do zwrócenia! " + self.iteratorTablename + "   " + str(self.currentRowId))
+        raise StopIteration #to jest tak: jeśli jest jeden wiersz w kursorze, to wykona się return (funkcja się skończy)
+                            #jeśli dojdzie aż tu, to znacy, że nie było ani jednego wiersza = skończyły się dane
+
+    def stopIterator(self):
+        pass
 
 
 if __name__ == '__main__':

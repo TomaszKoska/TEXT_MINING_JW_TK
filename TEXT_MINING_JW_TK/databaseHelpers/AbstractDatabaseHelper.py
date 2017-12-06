@@ -4,18 +4,28 @@ class AbstractDatabaseHelper(object):
     """description of class"""
 
     def __init__(self, databesePath):
-        pass
+        raise NotImplementedError
 
     def start(self):
-        pass
+        raise NotImplementedError
 
     def close(self):
-        pass
+        raise NotImplementedError
 
     def createDocumentTable(self,tableName=""):
-        pass
+        raise NotImplementedError
 
     def saveDocument(self,document = Document(), tableName = ""):
-        pass
+        raise NotImplementedError
+
     def getDocuments(self, tableName = ""):
-        pass
+        raise NotImplementedError
+
+    def startIterator(self):
+        raise NotImplementedError
+
+    def getNextDocument(self):
+        raise NotImplementedError
+
+    def stopIterator(self):
+        raise NotImplementedError

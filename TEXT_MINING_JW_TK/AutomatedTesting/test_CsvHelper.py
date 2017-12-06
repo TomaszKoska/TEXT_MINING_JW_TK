@@ -1,10 +1,12 @@
 import unittest
 from dataModel.Document import Document
 from databaseHelpers.CsvHelper import CsvHelper
+import tempfile
+
 
 class Test_CsvHelper(unittest.TestCase):
     def setUp(self):
-        self.testHelper = CsvHelper("D:/databases/csv")
+        self.testHelper = CsvHelper(tempfile.gettempdir())
         self.tableName = "someTestNameThatYouShouldNOTUse"
         self.testHelper.createDocumentTable(self.tableName)
         
@@ -37,7 +39,32 @@ class Test_CsvHelper(unittest.TestCase):
 
         for i in range(0,len(docsExtracted)):
             self.assertEqual(docsExtracted[i]== self.testDocs[i],True)
+    
+    def test_Iterator(self):
+        self.testHelper.startIterator(self.tableName)
+        docsExtracted = []
+        try:
+            while(True):
+                docsExtracted.append(self.testHelper.getNextDocument())
+        except StopIteration:
+            self.testHelper.stopIterator()
 
+        for i in range(0,len(docsExtracted)):
+            self.assertEqual(docsExtracted[i]== self.testDocs[i],True)
+
+    def test_IteratorOnEmptyFile(self):
+        emptyHelper = CsvHelper("D:/databases/csv")
+        emptyName = "emptyTestDatabase"
+        emptyHelper.createDocumentTable(emptyName)
+        emptyHelper.startIterator(emptyName)
+
+        docsExtracted = []
+        try:
+            while(True):
+                docsExtracted.append(emptyHelper.getNextDocument())
+        except StopIteration:
+            emptyHelper.stopIterator()
+        self.assertEqual(len(docsExtracted),0)
 
 if __name__ == '__main__':
     unittest.main()
