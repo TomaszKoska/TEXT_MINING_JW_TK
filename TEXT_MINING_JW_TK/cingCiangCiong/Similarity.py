@@ -21,7 +21,7 @@ def basicSimilarity(wordCountList={},wordCountList2={},allWords=[],**kwargs):
             result[w] = 0
     return sum(result.values())
 
-def BM25Similarity(wordCountList={}, wordCountList2={}, allWords=[], k=0, b=0, avgDocLength = 1,**kwargs):
+def bm25Similarity(wordCountList={}, wordCountList2={}, allWords=[], k=0, b=0, avgDocLength = 1,**kwargs):
 
 
     if len(allWords) == 0:
@@ -29,32 +29,32 @@ def BM25Similarity(wordCountList={}, wordCountList2={}, allWords=[], k=0, b=0, a
         allWords.extend(list(wordCountList2.keys())[:])
 
     total = sum(wordCountList.values())
-    
+    tmp ={}
     for w in allWords:
         try:
-            wordCountList[w] = wordCountList[w]*(k+1)/(wordCountList[w]+k*(1-b+b*total)/avgDocLength)
+            tmp[w] = wordCountList[w]*(k+1)/(wordCountList[w]+k*(1-b+b*total)/avgDocLength)
         except KeyError:
-            wordCountList[w] = 0
+            tmp[w] = 0
 
     total = sum(wordCountList2.values())
-    
+    tmp2 ={}
     for w in allWords:
         try:
-            wordCountList2[w] = wordCountList2[w]*(k+1)/(wordCountList2[w]+k*(1-b+b*total)/avgDocLength)
+            tmp2[w] = wordCountList2[w]*(k+1)/(wordCountList2[w]+k*(1-b+b*total)/avgDocLength)
         except KeyError:
-            wordCountList2[w] = 0
+            tmp2[w] = 0
     result ={}
 
-    total1=sum(wordCountList.values())
-    total2=sum(wordCountList2.values())
+    total1=sum(tmp.values())
+    total2=sum(tmp2.values())
 
     for w in allWords:
-        result[w] = wordCountList[w]/total1*wordCountList2[w]/total2
+        result[w] = tmp[w]/total1*tmp2[w]/total2
 
     return sum(result.values())
 
 
-def getIDF(documents=[], allWords=[]):
+def getIdf(documents=[], allWords=[]):
     
     if len(allWords) == 0:
         allWords = getAllWords(documents)
@@ -79,23 +79,100 @@ def getIDF(documents=[], allWords=[]):
 
 
 
-def getIDFSimilarity(wordCountList={},wordCountList2={},idf={},**kwargs):
-
+def idfSimilarity(wordCountList={},wordCountList2={},idf={},**kwargs):
     result ={}
     size1=sum(wordCountList.values())
     size2=sum(wordCountList2.values())
-
+    #print(wordCountList)
+    #print(wordCountList2)
+    #print(size1)
+    #print(size2)
     for w in idf.keys():
         try:
             result[w] = wordCountList[w]/size1*wordCountList2[w]/size2*idf[w]
         except KeyError:
             result[w] = 0
+    #print(result)
     return sum(result.values())
 
 
 
-def getAllSimilarities(documents =[] , sim = basicSimilarity, **kwargs):
-    sim(wordCountList={'A':1,'B':2}, wordCountList2={'A':1,'B':1,'C':3,'D':4}, k=kwargs['k'], b= kwargs['b'], documentCount=1)
+def idfBm25Similarity(wordCountList={},wordCountList2={},idf={}, k=0, b=0, avgDocLength = 1, **kwargs):
+    total = sum(wordCountList.values())
+    tmp ={}
+    for w in idf.keys():
+        try:
+            tmp[w] = wordCountList[w]*(k+1)/(wordCountList[w]+k*(1-b+b*total)/avgDocLength)
+        except KeyError:
+            tmp[w] = 0
+
+    total = sum(wordCountList2.values())
+    tmp2 ={}
+    for w in idf.keys():
+        try:
+            tmp2[w] = wordCountList2[w]*(k+1)/(wordCountList2[w]+k*(1-b+b*total)/avgDocLength)
+        except KeyError:
+            tmp2[w] = 0
+    result ={}
+
+    total1=sum(tmp.values())
+    total2=sum(tmp2.values())
+
+    for w in idf.keys():
+        result[w] = tmp[w]/total1*tmp2[w]/total2*idf[w]
+    #print(result)
+    return sum(result.values())
+
+
+
+def documentsSimilarity(document1=Document(),document2=Document(),allWords=[],similarityFunction=basicSimilarity,**kwargs):
+    if len(allWords)==0:
+        allWords = getAllWords([document1,document2])
+
+    return similarityFunction(wordCountList=getWordsCount(documents=document1,allWords=allWords),wordCountList2=getWordsCount(documents=document2,allWords=allWords),allWords=allWords,**kwargs)
+
+def allDocumentsSimilarity(documents =[], allWords=[],similarityFunction=basicSimilarity,**kwargs):
+    result = {}
+    for d in documents:
+        result[d.title] = {}
+        for d2 in documents:
+            result[d.title][d2.title] = documentsSimilarity(d,d2,allWords=allWords,similarityFunction=similarityFunction,**kwargs)
+    return result
+
+
+
+d1 = Document(title="TEST!", text="THE DOG GOES TO A VET BECAUSE HE IS VERY SICK HE HOPES TO GET SOME MEDICINE", date="", source="")
+d2 = Document(title="TEST2!", text="A DOG IS A NICE PET HE RUNS AND RUNS CHASES CATS", date="", source="")
+
+aw = getAllWords([d1,d2])
+c1= getWordsCount(d1,aw)
+c2= getWordsCount(d2,aw)
+
+print(basicSimilarity(wordCountList=c1, wordCountList2=c2,allWords=aw))
+print(documentsSimilarity(document1=d1,document2=d2,allWords=[],similarityFunction=basicSimilarity))
+
+print(basicSimilarity(wordCountList=c1, wordCountList2=c1,allWords=aw))
+print(documentsSimilarity(document1=d1,document2=d1,allWords=[],similarityFunction=basicSimilarity))
+
+print(basicSimilarity(wordCountList=c2, wordCountList2=c2,allWords=aw))
+print(documentsSimilarity(document1=d2,document2=d2,allWords=[],similarityFunction=basicSimilarity))
+
+print(bm25Similarity(wordCountList=c1, wordCountList2=c2,allWords=aw,k=1,b=0.5,avgDocLength=1))
+print(documentsSimilarity(document1=d1,document2=d2,allWords=[],similarityFunction=bm25Similarity,k=1,b=0.5,avgDocLength=1))
+
+print("idf now")
+idf = getIdf([d1,d2],aw)
+print(idf)
+
+print(idfSimilarity(wordCountList=c1, wordCountList2=c2,allWords=aw,idf=idf))
+print(documentsSimilarity(document1=d1,document2=d2,allWords=aw,similarityFunction=idfSimilarity,idf=idf))
+print("idfBm25Similarity")
+print(idfBm25Similarity(wordCountList=c1, wordCountList2=c2,idf=idf,k=1000,b=0.9,avgDocLength=1))
+print(documentsSimilarity(document1=d1,document2=d2,allWords=aw,similarityFunction=idfBm25Similarity,idf=idf,k=1000,b=0.9,avgDocLength=1))
+
+print("All docs now")
+print(allDocumentsSimilarity(documents=[d1,d2],allWords=aw,similarityFunction=idfBm25Similarity,idf=idf,k=1000,b=0.9,avgDocLength=1))
+
 
 #getAllSimilarities(documents=[], sim = basicSimilarity,k=1,b=6)
 #getAllSimilarities(documents=[], sim = BM25similarity,k=1,b=6)
