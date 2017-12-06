@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AutomatedTesting\test_CingCiangCiongBase.py</StartupFile>
+    <StartupFile>AutomatedTesting\test_CingCiangCiongSimilarity.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -27,6 +27,9 @@
     <Compile Include="AutomatedTesting\test_CingCiangCiongBase.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AutomatedTesting\test_CingCiangCiongSimilarity.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="AutomatedTesting\test_CsvHelper.py">
       <SubType>Code</SubType>
     </Compile>
@@ -40,6 +43,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="cingCiangCiong\Clean.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cingCiangCiong\Similarity.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="cingCiangCiong\__init__.py">
