@@ -140,6 +140,115 @@ def allDocumentsSimilarity(documents =[], allWords=[],similarityFunction=basicSi
     return result
 
 
+def getWordProbability(word="",documents=[]):
+    if (type(documents) is Document):
+        documents=[documents]
+    containing=0
+    total = len(documents)
+    for d in documents:
+        if word in getAllWords(d):
+            containing = containing +1
+    #co jeśli total nie istlnieje?
+    return containing/total
+
+def getWordConditionalProbability(word="",conditionWord="",documents=[]):
+    if (type(documents) is Document):
+        documents=[documents]
+    containing=0
+    containingCondition=0
+    for d in documents:
+        aw = getAllWords(d)
+        if conditionWord in aw:
+            containingCondition = containingCondition +1
+            if word in aw:
+                containing = containing +1
+    #co jeśli condition nie występuje?
+    return containing/containingCondition
+
+def get01ConditionalProbability(word="",conditionWord="",documents=[]):
+    if (type(documents) is Document):
+        documents=[documents]
+    containing=0
+    containingCondition=0
+    for d in documents:
+        aw = getAllWords(d)
+        if conditionWord in aw:
+            containingCondition = containingCondition +1
+            if not(word in aw):
+                containing = containing +1
+    #co jeśli condition nie występuje?
+    return containing/containingCondition
+
+def get10ConditionalProbability(word="",conditionWord="",documents=[]):
+    if (type(documents) is Document):
+        documents=[documents]
+    containing=0
+    containingCondition=0
+    for d in documents:
+        aw = getAllWords(d)
+        if not(conditionWord in aw):
+            containingCondition = containingCondition +1
+            if word in aw:
+                containing = containing +1
+    #co jeśli condition nie występuje?
+    return containing/containingCondition
+
+def get00ConditionalProbability(word="",conditionWord="",documents=[]):
+    if (type(documents) is Document):
+        documents=[documents]
+    containing=0
+    containingCondition=0
+    for d in documents:
+        aw = getAllWords(d)
+        if not(conditionWord in aw):
+            containingCondition = containingCondition +1
+            if not(word in aw):
+                containing = containing +1
+    #co jeśli condition nie występuje?
+    return containing/containingCondition
+
+def get11ConditionalProbability(word="",conditionWord="",documents=[]):
+    return getWordConditionalProbability(word=word,conditionWord=conditionWord,documents=documents)
+
+
+def getCoocurenceProbability(word="",word2="",documents=[]):
+    if (type(documents) is Document):
+        documents=[documents]
+    containing=0
+    total = len(documents)
+    for d in documents:
+        aw = getAllWords(d)
+        if word in aw and word2 in aw:
+            containing = containing +1
+    #co jeśli total nie istlnieje?
+    return containing/total
+
+def getWordEntrophy(word="",documents=[]):
+    p=getWordProbability(word,documents)
+    q=1-p
+    x=0
+    if p != 0:
+        x =-p*math.log2(p)
+    else:
+        x=0
+    if p != 0:
+        x =x -q*math.log2(q)
+    return x
+
+def getWordConditionalEntrophy(word="",conditionWord="",documents=[]):
+    p01 = getWordProbability(word=word,conditionWord=conditionWord,documents=documents)
+    p11 = getWordProbability(word=word,conditionWord=conditionWord,documents=documents)
+    x=0
+    if p01 != 0:
+        x =-p01*math.log2(p01)
+    else:
+        x=0
+    if p11 != 0:
+        x =x -p11*math.log2(p11)
+    return x   
+
+
+
 
 d1 = Document(title="TEST!", text="THE DOG GOES TO A VET BECAUSE HE IS VERY SICK HE HOPES TO GET SOME MEDICINE", date="", source="")
 d2 = Document(title="TEST2!", text="A DOG IS A NICE PET HE RUNS AND RUNS CHASES CATS", date="", source="")
@@ -174,7 +283,14 @@ print("All docs now")
 print(allDocumentsSimilarity(documents=[d1,d2],allWords=aw,similarityFunction=idfBm25Similarity,idf=idf,k=1000,b=0.9,avgDocLength=1))
 
 
-#getAllSimilarities(documents=[], sim = basicSimilarity,k=1,b=6)
+
+
+
+
+
+
+
+#getAllSimilarities(documents=[], sim1 = basicSimilarity,k=1,b=6)
 #getAllSimilarities(documents=[], sim = BM25similarity,k=1,b=6)
 
 #k=10
