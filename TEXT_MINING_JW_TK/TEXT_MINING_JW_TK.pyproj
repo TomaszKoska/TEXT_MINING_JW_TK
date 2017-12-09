@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>cingCiangCiong\Similarity.py</StartupFile>
+    <StartupFile>AutomatedTesting\test_CingCiangCiongSimilarity.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
