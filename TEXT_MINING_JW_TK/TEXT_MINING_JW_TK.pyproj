@@ -75,6 +75,9 @@
     <Compile Include="dataModel\Document.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="dataModel\TextTopic.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="dataModel\__init__.py">
       <SubType>Code</SubType>
     </Compile>
