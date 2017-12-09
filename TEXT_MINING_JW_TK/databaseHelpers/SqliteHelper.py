@@ -120,6 +120,18 @@ class SqliteHelper(AbstractDatabaseHelper):
     def stopIterator(self):
         pass
 
+    def createTopicTable(self,tableName=""):
+        raise NotImplementedError
+
+    def saveTopic(self,document = TextTopic(), tableName = ""):
+        raise NotImplementedError
+
+    def getTopics(self, tableName = ""):
+        raise NotImplementedError
+
+
+
+
 
 if __name__ == '__main__':
     pass

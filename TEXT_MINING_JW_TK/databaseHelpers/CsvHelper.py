@@ -87,3 +87,12 @@ class CsvHelper(AbstractDatabaseHelper):
     def stopIterator(self):
         self.csvfile.close()
 
+
+    def createTopicTable(self,tableName=""):
+        raise NotImplementedError
+
+    def saveTopic(self,document = TextTopic(), tableName = ""):
+        raise NotImplementedError
+
+    def getTopics(self, tableName = ""):
+        raise NotImplementedError
