@@ -126,7 +126,12 @@ def getWordProbability(word="",documents=[]):
         if word in getAllWords(d):
             containing = containing +1
     #co jeśli total nie istlnieje?
-    return containing/total
+    if total != 0:
+        return containing/total
+    else:
+        return 0
+
+
 
 def getWordConditionalProbability(word="",conditionWord="",documents=[]):
     if (type(documents) is Document):
@@ -140,7 +145,10 @@ def getWordConditionalProbability(word="",conditionWord="",documents=[]):
             if word in aw:
                 containing = containing +1
     #co jeśli condition nie występuje?
-    return containing/containingCondition
+    if containingCondition != 0:
+        return containing/containingCondition
+    else:
+        return 0
 
 def get01ConditionalProbability(word="",conditionWord="",documents=[]):
     if (type(documents) is Document):
@@ -153,8 +161,10 @@ def get01ConditionalProbability(word="",conditionWord="",documents=[]):
             containingCondition = containingCondition +1
             if not(word in aw):
                 containing = containing +1
-    #co jeśli condition nie występuje?
-    return containing/containingCondition
+    if containingCondition != 0:
+        return containing/containingCondition
+    else:
+        return 0
 
 def get10ConditionalProbability(word="",conditionWord="",documents=[]):
     if (type(documents) is Document):
@@ -168,7 +178,10 @@ def get10ConditionalProbability(word="",conditionWord="",documents=[]):
             if word in aw:
                 containing = containing +1
     #co jeśli condition nie występuje?
-    return containing/containingCondition
+    if containingCondition != 0:
+        return containing/containingCondition
+    else:
+        return 0
 
 def get00ConditionalProbability(word="",conditionWord="",documents=[]):
     if (type(documents) is Document):
@@ -182,7 +195,11 @@ def get00ConditionalProbability(word="",conditionWord="",documents=[]):
             if not(word in aw):
                 containing = containing +1
     #co jeśli condition nie występuje?
-    return containing/containingCondition
+    if containingCondition != 0:
+        return containing/containingCondition
+    else:
+        return 0
+
 
 def get11ConditionalProbability(word="",conditionWord="",documents=[]):
     return getWordConditionalProbability(word=word,conditionWord=conditionWord,documents=documents)
@@ -198,7 +215,10 @@ def getCoocurenceProbability(word="",word2="",documents=[]):
         if word in aw and word2 in aw:
             containing = containing +1
     #co jeśli total nie istlnieje?
-    return containing/total
+    if containingCondition != 0:
+        return containing/containingCondition
+    else:
+        return 0
 
 def getWordEntrophy(word="",documents=[]):
     p=getWordProbability(word,documents)
@@ -213,14 +233,14 @@ def getWordEntrophy(word="",documents=[]):
     return x
 
 def getWordConditionalEntrophy(word="",conditionWord="",documents=[]):
-    p01 = getWordProbability(word=word,conditionWord=conditionWord,documents=documents)
+    p11 = getWordConditionalProbability(word=word,conditionWord=conditionWord,documents=documents)
     x=0
-    if p01 != 0:
-        x =-p01*math.log2(p01)
+    if p11 != 0:
+        x =-p11*math.log2(p11)
     else:
         x=0
-    if (1-p01) != 0:
-        x =x -(1-p01)*math.log2(1-p01)
+    if (1-p11) != 0:
+        x =x -(1-p11)*math.log2(1-p11)
     return x   
 
 
