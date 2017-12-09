@@ -1,6 +1,6 @@
 
 from crawlers.BankierExtraction import BankierNewsCrawler
 
-BankierNewsCrawler(1,5)
+BankierNewsCrawler(1,50)
 
 
