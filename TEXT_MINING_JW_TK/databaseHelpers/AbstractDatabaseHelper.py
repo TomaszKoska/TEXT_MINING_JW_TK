@@ -34,7 +34,7 @@ class AbstractDatabaseHelper(object):
     def createTopicTable(self,tableName=""):
         raise NotImplementedError
 
-    def saveTopic(self,document = TextTopic(), tableName = ""):
+    def saveTopic(self,topic = TextTopic(), tableName = ""):
         raise NotImplementedError
 
     def getTopics(self, tableName = ""):

@@ -13,11 +13,13 @@ class Test_SqliteHelper2(unittest.TestCase):
             os.remove(tempfile.gettempdir() + "/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
         except:
             pass
-
-        testHelper = SqliteHelper("D:/databases/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
+        print(tempfile.gettempdir() + "/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
+        testHelper = SqliteHelper(tempfile.gettempdir() + "/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
         tableName = "someTestNameThatYouShouldNOTUse"
+        topicTableName = "someTopics"
         testHelper.start()
         testHelper.createDocumentTable(tableName)
+        testHelper.createTopicTable(topicTableName)
         testDocs = []
         for i in range(1,10):
             testDocs.append(Document(title="TESTOWY TYTUŁ "+str(i),text="TESTOWY CONTENT! "+str(i),date="2017-08-05",source="www.wp.pl"))
@@ -30,11 +32,11 @@ class Test_SqliteHelper2(unittest.TestCase):
         testHelper.close()
     @classmethod
     def tearDownClass(cls):
-        os.remove("D:/databases/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
+        os.remove(tempfile.gettempdir() + "/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
 
 
     def setUp(self):
-        self.testHelper = SqliteHelper("D:/databases/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
+        self.testHelper = SqliteHelper(tempfile.gettempdir() + "/SomeTestDbBetterDontUseThisNameEverEverEverAgain.db")
         self.tableName = "someTestNameThatYouShouldNOTUse"
         self.testHelper.start()
 
@@ -101,6 +103,7 @@ class Test_SqliteHelper2(unittest.TestCase):
             print(docsExtracted[i].date)
             print(docsExtracted[i].source)
             self.assertEqual(docsExtracted[i]== testDocs[i],True)
+
 
     #def test_IteratorOnEmptyFile(self):
     #    emptyHelper = CsvHelper("D:/databases/csv")

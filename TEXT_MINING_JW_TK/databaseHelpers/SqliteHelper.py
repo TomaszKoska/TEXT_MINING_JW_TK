@@ -1,5 +1,6 @@
 from databaseHelpers.AbstractDatabaseHelper import AbstractDatabaseHelper
 from dataModel.Document import Document
+from dataModel.TextTopic import TextTopic
 
 import re
 import sqlite3
@@ -66,10 +67,11 @@ class SqliteHelper(AbstractDatabaseHelper):
 
     def createDocumentTable(self, tableName):
         listOfFields = {'ID' : "INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE",
-        'TITLE' : "INTEGER",
+        'TITLE' : "TEXT",
         'CONTENT' : "TEXT",
         'DATE' : "TEXT",
-        'SOURCE': "TEXT"
+        'SOURCE': "TEXT",
+        'LABEL' : "TEXT"
         }
         self.createSimpleTable(tableName,listOfFields)
 
@@ -81,22 +83,21 @@ class SqliteHelper(AbstractDatabaseHelper):
         #query = "INSERT INTO " + tableName + " (TITLE, CONTENT, DATE, SOURCE) \
         #  VALUES ('"+str(document.title) +"','"+documentContentToSave+"','"+ str(document.date)+"','"+str(document.source)+"')"
         
-        query = "INSERT INTO "+tableName+" (TITLE, CONTENT, DATE, SOURCE) VALUES (?, ? , ? , ? )"
+        query = "INSERT INTO "+tableName+" (TITLE, CONTENT, DATE, SOURCE, LABEL) VALUES (?, ? , ? , ? , ?)"
         #print(query)
-        self.connection.execute(query,(str(document.title),str(document.text),str(document.date),str(document.source)));
-        #print("coś tam wrzucam...")
+        self.connection.execute(query,(str(document.title),str(document.text),str(document.date),str(document.source),str(document.label)));
         self.connection.commit()
 
     
     def getDocuments(self, tableName = "noNameGiven"):
         documents = []
-        cursor = self.connection.execute("SELECT ID, TITLE, CONTENT, DATE, SOURCE  from " + tableName)
+        cursor = self.connection.execute("SELECT ID, TITLE, CONTENT, DATE, SOURCE, LABEL  from " + tableName)
         for row in cursor:
            print ("TITLE = ", row[1])
            print ("CONTENT = ", row[2])
            print ("DATE = ", row[3])
            print ("SOURCE = ", row[4], "\n")
-           documents.append(Document(title=row[1], text=row[2], date=row[3], source=row[4]))
+           documents.append(Document(title=row[1], text=row[2], date=row[3], source=row[4], label = row[5]))
 
         return documents;
 
@@ -108,11 +109,11 @@ class SqliteHelper(AbstractDatabaseHelper):
 
 
     def getNextDocument(self):
-        cursor = self.connection.execute("SELECT ID, TITLE, CONTENT, DATE, SOURCE  from " + self.iteratorTablename + " WHERE ID > " + str(self.currentRowId) + " LIMIT 1;")
+        cursor = self.connection.execute("SELECT ID, TITLE, CONTENT, DATE, SOURCE, LABEL  from " + self.iteratorTablename + " WHERE ID > " + str(self.currentRowId) + " LIMIT 1;")
         for row in cursor:
             self.currentRowId = int(row[0])
             #print("Coś do zwrócenia!")
-            return Document(title=row[1], text=row[2], date=row[3], source=row[4])
+            return Document(title=row[1], text=row[2], date=row[3], source=row[4], label = row[5])
         #print("Nic do zwrócenia! " + self.iteratorTablename + "   " + str(self.currentRowId))
         raise StopIteration #to jest tak: jeśli jest jeden wiersz w kursorze, to wykona się return (funkcja się skończy)
                             #jeśli dojdzie aż tu, to znacy, że nie było ani jednego wiersza = skończyły się dane
@@ -121,13 +122,35 @@ class SqliteHelper(AbstractDatabaseHelper):
         pass
 
     def createTopicTable(self,tableName=""):
-        raise NotImplementedError
+        listOfFields = {'ID' : "INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE",
+        'TOPIC_NAME' : "TEXT",
+        'WORD' : "TEXT",
+        'COUNT' : "INTEGER"
+        }
+        self.createSimpleTable(tableName,listOfFields)
 
-    def saveTopic(self,document = TextTopic(), tableName = ""):
-        raise NotImplementedError
+
+    def saveTopic(self,topic = TextTopic(), tableName = ""):
+        query = "INSERT INTO "+tableName+" (TOPIC_NAME, WORD, COUNT) VALUES (?, ? , ? )"
+        #print(query)
+        for w,c in topic.wordDistributions.items():
+            self.connection.execute(query,(str(topic.name),str(w),c));
+        self.connection.commit()
+
 
     def getTopics(self, tableName = ""):
-        raise NotImplementedError
+        topics = {}
+        topicCursor = self.connection.execute("SELECT DISTINCT TOPIC_NAME from " + tableName)
+
+        for t in topicCursor:
+           topics[t[0]]={}
+           cursor = self.connection.execute("SELECT TOPIC_NAME, WORD, COUNT  from " + tableName + " WHERE TOPIC_NAME = ?;",(t[0],))
+           dist = {}
+           for row in cursor:
+               dist[row[1]]=row[2]
+           topics[t[0]]=TextTopic(name=t[0],wordDistributions=dist)
+
+        return topics;
 
 
 

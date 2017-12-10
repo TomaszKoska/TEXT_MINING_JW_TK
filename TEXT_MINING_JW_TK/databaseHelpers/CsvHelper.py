@@ -1,5 +1,6 @@
 from databaseHelpers.AbstractDatabaseHelper import AbstractDatabaseHelper
 from dataModel.Document import Document
+from dataModel.TextTopic import TextTopic
 import csv
 
 class CsvHelper(AbstractDatabaseHelper):
@@ -27,7 +28,7 @@ class CsvHelper(AbstractDatabaseHelper):
             tableName = tableName + ".csv"
         tableName = self.databasePath + tableName
         with open(tableName, "w") as my_empty_csv:
-            csv_writer = csv.DictWriter(my_empty_csv,fieldnames=["ID", "TITLE", "DATE","SOURCE", "CONTENT"], delimiter=self.delimiter,lineterminator = '\n')
+            csv_writer = csv.DictWriter(my_empty_csv,fieldnames=["ID", "TITLE", "DATE","SOURCE", "CONTENT","LABEL"], delimiter=self.delimiter,lineterminator = '\n')
             csv_writer.writeheader()
 
     def nextDocId(self, tableName="noNameGiven"):
@@ -51,8 +52,8 @@ class CsvHelper(AbstractDatabaseHelper):
         fullTableName = self.databasePath + tableName
 
         with open(fullTableName, "a") as openedFile:
-            csv_writer = csv.DictWriter(openedFile,fieldnames=["ID", "TITLE", "DATE","SOURCE", "CONTENT"], delimiter=self.delimiter,lineterminator = '\n') 
-            csv_writer.writerow({"ID": self.nextDocId(tableName), "TITLE" : document.title, "DATE": document.date, "SOURCE" : document.source,  "CONTENT" : document.text}  )
+            csv_writer = csv.DictWriter(openedFile,fieldnames=["ID", "TITLE", "DATE","SOURCE", "CONTENT","LABEL"], delimiter=self.delimiter,lineterminator = '\n') 
+            csv_writer.writerow({"ID": self.nextDocId(tableName), "TITLE" : document.title, "DATE": document.date, "SOURCE" : document.source,  "CONTENT" : document.text , "LABEL" : document.label}  )
         pass
 
 
@@ -64,7 +65,7 @@ class CsvHelper(AbstractDatabaseHelper):
         with open(fullTableName, 'rt') as csvfile:
             csvReader = csv.reader(csvfile, delimiter=self.delimiter, quotechar="\"")
             for row in csvReader:
-                documents.append(Document(title=row[1], text=row[4], date=row[2], source=row[3]))
+                documents.append(Document(title=row[1], text=row[4], date=row[2], source=row[3],label=row[5]))
                 #print(documents.pop().text)
             documents.remove(documents[0])
         return documents
@@ -89,10 +90,24 @@ class CsvHelper(AbstractDatabaseHelper):
 
 
     def createTopicTable(self,tableName=""):
-        raise NotImplementedError
+        #dodać obsługę przypadku, że już jest taki plik
+        if tableName[-4:] != ".csv":
+            tableName = tableName + ".csv"
+        tableName = self.databasePath + tableName
+        with open(tableName, "w") as my_empty_csv:
+            csv_writer = csv.DictWriter(my_empty_csv,fieldnames=["ID", "TOPIC_NAME", "WORD","COUNT"], delimiter=self.delimiter,lineterminator = '\n')
+            csv_writer.writeheader()
 
-    def saveTopic(self,document = TextTopic(), tableName = ""):
-        raise NotImplementedError
+    def saveTopic(self,topic = TextTopic(), tableName = ""):
+        if tableName[-4:] != ".csv":
+            tableName = tableName + ".csv"
+        fullTableName = self.databasePath + tableName
+
+        with open(fullTableName, "a") as openedFile:
+            csv_writer = csv.DictWriter(openedFile,fieldnames=["ID", "TOPIC_NAME", "WORD","COUNT"], delimiter=self.delimiter,lineterminator = '\n') 
+            for w,c in topic.wordDistributions.items():
+                csv_writer.writerow({"ID": self.nextDocId(tableName), "TOPIC_NAME" : topic.name, "WORD" : w, "COUNT" : c}  )
+        pass
 
     def getTopics(self, tableName = ""):
         raise NotImplementedError
