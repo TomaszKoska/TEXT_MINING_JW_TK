@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AutomatedTesting\test_CsvHelper2.py</StartupFile>
+    <StartupFile>demo\topicClassificationExample.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -87,6 +87,12 @@
     <Compile Include="dataModel\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="demo\topicClassificationExample.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demo\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="garbage\20171204.py">
       <SubType>Code</SubType>
     </Compile>
@@ -128,6 +134,7 @@
     <Folder Include="crawlers\" />
     <Folder Include="databaseHelpers\" />
     <Folder Include="dataModel\" />
+    <Folder Include="demo\" />
     <Folder Include="garbage\" />
     <Folder Include="research\" />
     <Folder Include="research\BankierMining\" />

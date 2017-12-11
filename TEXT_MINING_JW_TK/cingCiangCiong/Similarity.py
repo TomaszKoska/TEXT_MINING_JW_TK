@@ -25,6 +25,8 @@ def basicSimilarity(wordCountList={},wordCountList2={},allWords=[],**kwargs):
             result[w] = wordCountList[w]/size1*wordCountList2[w]/size2
         except KeyError:
             result[w] = 0
+        except:
+            result[w] = 0
     #print(result)
     return sum(result.values())
 
