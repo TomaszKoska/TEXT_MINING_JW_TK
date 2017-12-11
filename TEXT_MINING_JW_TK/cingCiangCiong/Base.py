@@ -397,3 +397,11 @@ def getWindowContextIter(dbHelper=None, tableName="NoNameGiven", word = "", dist
 
     return output
 
+def fitVectorInSpace(wordCountList = {}, allWords = []):
+    out ={}
+    for w in allWords:
+        try:
+            out[w]=wordCountList[w]
+        except KeyError:
+            out[w] = 0
+    return out

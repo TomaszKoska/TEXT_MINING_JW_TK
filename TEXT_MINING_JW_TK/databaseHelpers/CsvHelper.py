@@ -7,7 +7,6 @@ class CsvHelper(AbstractDatabaseHelper):
     """CsvHelper - dla niego ścieżką do danych jest folder(!) w którym będzie tworzył pliki csv, każdy plik csv jest jak tabela bazy danych"""
 
     def __init__(self, databesePath = "D:/databases/csv/", delimiter = ","):
-        #dodać obsługę, linków bez "/" na końcu
         if databesePath[-1:] != "/":
             databesePath = databesePath + "/"
         self.databasePath = databesePath
@@ -110,4 +109,17 @@ class CsvHelper(AbstractDatabaseHelper):
         pass
 
     def getTopics(self, tableName = ""):
-        raise NotImplementedError
+        if tableName[-4:] != ".csv":
+            tableName = tableName + ".csv"
+        fullTableName = self.databasePath + tableName
+
+        topics ={}
+        with open(fullTableName, 'rt') as csvfile:
+            csvReader = csv.reader(csvfile, delimiter=self.delimiter, quotechar="\"")
+            csvReader.__next__()
+            for row in csvReader:
+                if not(row[1] in topics.keys()):
+                    topics[row[1]] = TextTopic(name=row[1],wordDistributions={})
+                topics[row[1]].wordDistributions[row[2]] = float(row[3])
+
+        return topics;
