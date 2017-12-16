@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>demo\topicClassificationExample.py</StartupFile>
+    <StartupFile>stemming\casesDatabase.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -126,6 +126,15 @@
     <Compile Include="research\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="stemming\casesDatabase.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stemming\DumbStemming.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stemming\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TEXT_MINING_JW_TK.py" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +147,7 @@
     <Folder Include="garbage\" />
     <Folder Include="research\" />
     <Folder Include="research\BankierMining\" />
+    <Folder Include="stemming\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
