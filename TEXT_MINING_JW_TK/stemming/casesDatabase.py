@@ -132,15 +132,16 @@ def findStem(words = []):
     stem = ""
     #letters = [x for x in longestWord(words)]
     letters = [x for x in words[0]]
-
+    words2 = [removeRedundantSpaces(w) for w in words]
     for l in letters:
         letterIn = True
-        for w in words:
-           #print("Does word %r meets %r - %r?" % (w,stem+l,(stem+l).replace("?","[a-zA-Z]*")))
-           checkedW =removeRedundantSpaces(w)
-           if re.search((stem+l).replace("?","[a-zA-Z]*"),checkedW) is None:
+        #print("Does word %r meets %r - %r?" % (w,stem+l,(stem+l).replace("?","[a-zA-Z]*")))
+        candidStemPattern = (stem+l).replace("?","[a-zA-ZęóąśłżźćńĘÓŁĄŚŻŹĆŃ]*")
+        for checkedW in words2:
+           if re.search(candidStemPattern,checkedW) is None:
                #print("no!")
                letterIn=False
+               break
         if letterIn:
             #print("all in!")
             stem=stem+l
@@ -163,7 +164,7 @@ def wordMinusStem(stem = "", word=""):
     letters = [x for x in stem]
     out = word #wynikowy string    
     pointer=0 #gdzie w sprawdzanym słowie stoję
-    stemPattern = "^"+(stem).replace("?","[a-zA-Z]*")+"[a-zA-Z]*"
+    stemPattern = "^"+(stem).replace("?","[a-zA-ZęóąśłżźćńĘÓŁĄŚŻŹĆŃ]*")+"[a-zA-ZęóąśłżźćńĘÓŁĄŚŻŹĆŃ]*"
      
     #najpierw znajde fragment pasujacy do patternu - to bedzie miejsce pointera
 
@@ -200,64 +201,6 @@ def wordsMinusStem(stem = "", words=[]):
         out.append(wordMinusStem(stem=stem,word = w))
     return list(set(out))
 
-
-
-
-
-def primitiveTest():
-    l = ["Kapetyng", "Kapetynga", "Kapetyngach", "Kapetyngami", "Kapetyngi", "Kapetyngiem", "Kapetyngom", "Kapetyngowi", "Kapetyngowie", "Kapetyngów", "Kapetyngu"]
-    s =findStem(l)
-    suf = wordsMinusStem(stem=s,words=l)
-    print(l)
-    print(s)
-    print(suf)
-
-    l = ["incydencik", "incydencikach", "incydencikami", "incydenciki", "incydencikiem", "incydencikom", "incydencikowi", "incydencików", "incydenciku"]
-    s =findStem(l)
-    suf = wordsMinusStem(stem=s,words=l)
-    print(l)
-    print(s)
-    print(suf)
-
-
-    l= ["indukować", "indukowali", "indukowaliby", "indukowalibyście", "indukowalibyśmy", "indukowaliście", "indukowaliśmy", "indukował", "indukowała", "indukowałaby", "indukowałabym", "indukowałabyś", "indukowałam", "indukowałaś", "indukowałby", "indukowałbym", "indukowałbyś", "indukowałem", "indukowałeś", "indukowało", "indukowałoby", "indukowały", "indukowałyby", "indukowałybyście", "indukowałybyśmy", "indukowałyście", "indukowałyśmy", "indukowana", "indukowaną", "indukowane", "indukowanego", "indukowanej", "indukowanemu", "indukowani", "indukowania", "indukowaniach", "indukowaniami", "indukowanie", "indukowaniem", "indukowaniom", "indukowaniu", "indukowano", "indukowany", "indukowanych", "indukowanym", "indukowanymi", "indukowań", "indukuj", "indukują", "indukując", "indukująca", "indukującą", "indukujące", "indukującego", "indukującej", "indukującemu", "indukujący", "indukujących", "indukującym", "indukującymi", "indukujcie", "indukujcież", "indukuje", "indukujecie", "indukujemy", "indukujesz", "indukuję", "indukujmy", "indukujmyż", "indukujże", "nieindukowana", "nieindukowaną", "nieindukowane", "nieindukowanego", "nieindukowanej", "nieindukowanemu", "nieindukowani", "nieindukowania", "nieindukowaniach", "nieindukowaniami", "nieindukowanie", "nieindukowaniem", "nieindukowaniom", "nieindukowaniu", "nieindukowany", "nieindukowanych", "nieindukowanym", "nieindukowanymi", "nieindukowań", "nieindukująca", "nieindukującą", "nieindukujące", "nieindukującego", "nieindukującej", "nieindukującemu", "nieindukujący", "nieindukujących", "nieindukującym", "nieindukującymi"]
-    s =findStem(l)
-    suf = wordsMinusStem(stem=s,words=l)
-    print(l)
-    print(s)
-    print(suf)
-
-
-    l= ["pies", " psa", "psach", "psami", "psem", "psie", "psom", "psów", "psu", "psy", "nienajpies"]
-    s =findStem(l)
-    suf = wordsMinusStem(stem=s,words=l)
-    print(l)
-    print(s)
-    print(suf)
-
-
-    l= ["być", "bądź", "bądźcie", "bądźcież", "bądźmy", "bądźmyż", "bądźże", "będą", "będąc", "będąca", "będącą", "będące", "będącego", "będącej", "będącemu", "będący", "będących", "będącym", "będącymi", "będę", "będzie", "będziecie", "będziemy", "będziesz", "bycia", "byciach", "byciami", "bycie", "byciem", "byciom", "byciu", "byli", "byliby", "bylibyście", "bylibyśmy", "byliście", "byliśmy", "był", "była", "byłaby", "byłabym", "byłabyś", "byłam", "byłaś", "byłby", "byłbym", "byłbyś", "byłem", "byłeś", "było", "byłoby", "były", "byłyby", "byłybyście", "byłybyśmy", "byłyście", "byłyśmy", "byto", "jest", "jestem", "jesteś", "jesteście", "jesteśmy", "niebędąca", "niebędącą", "niebędące", "niebędącego", "niebędącej", "niebędącemu", "niebędący", "niebędących", "niebędącym", "niebędącymi", "niebycia", "niebyciach", "niebyciami", "niebycie", "niebyciem", "niebyciom", "niebyciu", "niebyć", "są"]
-    s =findStem(l)
-    suf = wordsMinusStem(stem=s,words=l)
-    print(l)
-    print(s)
-    print(suf)
-
-
-    l= ["Aachen","Aachenem","Aachenie","Aachenowi","Aachenu"]
-    s =findStem(l)
-    suf = wordsMinusStem(stem=s,words=l)
-    print(l)
-    print(s)
-    print(suf)
-
-
-    l= ["Aachen"," Aachenem"," Aachenie"," Aachenowi"," Aachenu"]
-    s =findStem(l)
-    suf = wordsMinusStem(stem=s,words=l)
-    print(l)
-    print(s)
-    print(suf)
 
 
 #tu puszczone komendy
@@ -359,28 +302,21 @@ def getFeaturesAndSaveInCsv(features = getFinalFeatures(), outputPath = "D:/data
         for row in cursor:
             a+=1
             print(a/4028572)
-            #if a > 1000 :
-            #    break
+            if a > 4028:
+                break
             #print(row[0] , "       " + row[1])
             #print()
-            rowDict = {}
-            featureValues = getFeaturesFromWord(row[0],wordSpace=features)
-            rowDict["WORD" ]= row[0]
-            rowDict["ENDING" ]=row[1]
-            for i in range(0,len(features)):
-                rowDict[features[i]] = featureValues[i]
-            csvWriter.writerow(rowDict)
+            if "''" not in row[0]:
+                rowDict = {}
+                featureValues = getFeaturesFromWord(row[0],wordSpace=features)
+                rowDict["WORD" ]= row[0]
+                rowDict["ENDING" ]=row[1]
+                for i in range(0,len(features)):
+                    rowDict[features[i]] = featureValues[i]
+                csvWriter.writerow(rowDict)
     connection.close()
 
-#features = getFinalFeatures(minWords = 1000,without3=True)
-#features.sort()
-#print("sorted")
-#print(features)
-#print(getFeaturesFromWord("Konstantynopolitańczykowianeczkównaniedotykagówna",wordSpace=features))
-#pies = getFeaturesFromWord("piesek",wordSpace=features)
-#print(pies)
 
-#getFeaturesAndSaveInCsv(features = features)
 
 def openFeatures(path ="D:/databases/features_extracted.csv", delimiter=",",quotechar="\""):
     with open(path, 'rt') as csvfile:
@@ -395,4 +331,6 @@ def openFeatures(path ="D:/databases/features_extracted.csv", delimiter=",",quot
             
         print(datetime.datetime.now())
 
+features = getFinalFeatures(minWords = 1500,without3=True)
+getFeaturesAndSaveInCsv(features = features)
 #openFeatures()

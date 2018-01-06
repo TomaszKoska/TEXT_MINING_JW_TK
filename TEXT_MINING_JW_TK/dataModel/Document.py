@@ -12,4 +12,12 @@ class Document(object):
         return self.__dict__ == other.__dict__
 
     def __lt__(self, other):
-        return (self.text < other.text) 
+        return (self.text < other.text)
+
+    def toUpper(self):
+        self.title = title.upper()
+        self.text = text.upper()
+
+    def toLower(self):
+        self.title = title.lower()
+        self.text = text.lower()
