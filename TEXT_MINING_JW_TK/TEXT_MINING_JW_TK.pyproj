@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>bfb26511-c84e-49a1-b515-4d1fbadc1385</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>stemming\casesDatabase.py</StartupFile>
+    <StartupFile>AutomatedTesting\test_Stemming.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -40,6 +40,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AutomatedTesting\test_SqliteHelper3.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AutomatedTesting\test_Stemming.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AutomatedTesting\__init__.py">
@@ -126,6 +129,15 @@
     <Compile Include="research\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="stemmers\AbstractStemmer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stemmers\DictionaryBasedStemmer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="stemmers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="stemming\casesDatabase.py">
       <SubType>Code</SubType>
     </Compile>
@@ -153,6 +165,7 @@
     <Folder Include="garbage\" />
     <Folder Include="research\" />
     <Folder Include="research\BankierMining\" />
+    <Folder Include="stemmers\" />
     <Folder Include="stemming\" />
     <Folder Include="utils\" />
   </ItemGroup>
